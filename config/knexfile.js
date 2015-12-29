@@ -1,4 +1,5 @@
 // Update with your config settings.
+var path = require('path');
 
 module.exports = {
 
@@ -8,6 +9,7 @@ module.exports = {
       filename: '../__data/dev.sqlite3'
     },
     migrations: {
+      directory: 'migrations',
       tableName: 'knex_migrations'
     }
   },

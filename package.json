@@ -4,8 +4,11 @@
   "description": "Node.js base app for RedRadix",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "mocha --recursive"
+    "start": "npm run migrate:dev && node index.js",
+    "migrate:dev": "knex --knexfile ./config/knexfile.js migrate:latest",
+    "migrate:test": "knex --env test --knexfile ./config/knexfile.js migrate:latest",
+    "migrate": "npm run migrate:dev && npm run migrate:test",
+    "test": "npm run migrate:test && mocha --recursive"
   },
   "author": "Carlos de la Orden",
   "license": "ISC",
