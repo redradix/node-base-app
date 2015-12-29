@@ -5,6 +5,12 @@ describe('User Service', () => {
   var factory = require('../../services/user_service'),
       subject = factory(dbHelper.knex);
 
+  var fakeUserId;
+  var fakeUser = {
+    username: 'test',
+    password: 'test'
+  };
+
   it('Should return an object', () => {
     subject.should.be.an.Object;
     subject.getUserById.should.be.a.Function;
@@ -12,6 +18,41 @@ describe('User Service', () => {
     subject.create.should.be.a.Function;
   });
 
-  it('Should')
+  it('Should create a User with an id', done => {
+    subject.create(fakeUser).then(user => {
+      user.id.should.be.a.String;
+      user.username.should.equal(fakeUser.username);
+      user.password.should.equal(fakeUser.password);
+      fakeUserId = user.id
+      done();
+    });
+  });
+
+  it('Should get a User by id', done => {
+    subject.getUserById(fakeUserId).then(user => {
+        user.id.should.equal(fakeUserId);
+        user.username.should.equal(fakeUser.username);
+        user.password.should.equal(fakeUser.password);
+        done();
+      });
+  });
+
+  it('Should login a user with username and password', done => {
+    subject.login('test', 'test').then(user => {
+      user.id.should.equal(fakeUserId);
+      user.username.should.equal(fakeUser.username);
+      user.password.should.equal(fakeUser.password);
+      done();
+    })
+  })
+
+  it('Should reject login a user with wrong password', done => {
+    subject.login('test', 'badpassword').catch(err => {
+      err.message.should.match(/Wrong password/i);
+      done();
+    });
+  })
+
+
 
 });

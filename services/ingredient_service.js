@@ -1,8 +1,11 @@
+var uuid = require('uuid');
+
 function IngredientServiceFactory(db){
   var I = db('ingredient');
 
   function getAll(){
-    return I.select();
+    //I.select().orderBY doesn't work!!
+    return db.select('*').from('ingredient').orderBy('name');
   }
 
   function getById(id){
@@ -10,12 +13,23 @@ function IngredientServiceFactory(db){
   }
 
   function create(ingredient){
-    return I.insert(ingredient);
+    ingredient.id = uuid.v1();
+    return I.insert(ingredient).then(rows => {
+      if(rows[0] === 1){
+        return ingredient;
+      }
+      throw new Error('Ingredient insert failed');
+    });
   }
 
   function update(ingredient){
-    return I.where({ id: ingredient.id })
-      .update(ingredient);
+    return I.where({ id: ingredient.id }).update(ingredient)
+      .then(affectedRows => {
+        if(affectedRows === 1){
+          return ingredient;
+        }
+        throw new Error('Ingredient update failed');
+      });
   }
 
   function deleteById(id){

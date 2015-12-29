@@ -1,3 +1,5 @@
+var uuid = require('uuid');
+
 function UserServiceFactory(db){
   var User = db('user');
 
@@ -6,7 +8,16 @@ function UserServiceFactory(db){
   }
 
   function create(user){
-    return User.insert(user);
+    //create user Id
+    user.id = uuid.v1();
+    return User.insert(user).then(rows => {
+      if(rows[0] === 1){
+        return user;
+      }
+      else {
+        throw new Error('Insert failed');
+      }
+    });
   }
 
   function getByUsername(username){
