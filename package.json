@@ -1,0 +1,18 @@
+{
+  "name": "nodebaseapp",
+  "version": "0.1.0",
+  "description": "Node.js base app for RedRadix",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "author": "Carlos de la Orden",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3",
+    "knex": "^0.9.0",
+    "kontainer-di": "^0.9.8",
+    "passport": "^0.3.2",
+    "sqlite3": "^3.1.1"
+  }
+}
