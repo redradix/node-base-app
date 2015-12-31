@@ -1,6 +1,6 @@
 var httpConfig = {
-  host: 'localhost',
-  port: 3001,
+  host: '127.0.0.1',
+  port: 8001,
   jwtsecret: 's3cr3ts11ff'
 };
 

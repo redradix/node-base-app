@@ -4,9 +4,13 @@ var path = require('path');
 module.exports = {
 
   development: {
-    client: 'sqlite3',
+    client: 'mysql',
     connection: {
-      filename: '../__data/dev.sqlite3'
+      host: '127.0.0.1',
+      user: 'food',
+      password: 'food',
+      database: 'food',
+      charset: 'utf8'
     },
     migrations: {
       directory: 'migrations',

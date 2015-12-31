@@ -1,6 +1,18 @@
 var container = require('./containerConfig');
 
-container.start('userApi', { async: true })
-  .then(() => {
-    console.log('App started');
-  });
+
+process.name = 'foodapp';
+
+container.start('webapp');
+container.start('userApi');
+
+process.on('exit', function(){
+  container.stop('webapp');
+});
+process.on('uncaughtException', function(err){
+  container.stop('webapp');
+});
+process.on('SIGINT', function(){
+  container.stop('webapp');
+})
+

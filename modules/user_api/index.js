@@ -4,7 +4,6 @@ var _ = require('lodash');
 
 function UserAPIFactory(webapp, userService, config){
   var app = webapp.app;
-  var router = express.Router();
 
   function sanitizeUser(u){
     return _.omit(u, 'password');
@@ -13,7 +12,7 @@ function UserAPIFactory(webapp, userService, config){
   function createToken(user){
     return new Promise((resolve,reject) => {
       var payload =  {
-        id: user.id
+        id: user.id,
         username: user.username,
       };
 
@@ -42,8 +41,11 @@ function UserAPIFactory(webapp, userService, config){
   }
 
   function register(req, res){
-    var { username, password } = req.body;
-    userService.create({ username, password })
+    var newUser = {
+      username: req.body.username,
+      password: req.body.password
+    }
+    userService.create(newUser)
       .then(user => {
         console.log('User created', user);
         return createSession(req, res);
@@ -51,8 +53,7 @@ function UserAPIFactory(webapp, userService, config){
   }
 
   function createSession(req,res){
-    var { username, password } = req.body;
-    userService.login(username, password)
+    userService.login(req.body.username, req.body.password)
       .then(user => {
         console.log('Login OK', user);
         //create token
@@ -68,6 +69,7 @@ function UserAPIFactory(webapp, userService, config){
   }
 
   function getSession(req,res){
+    console.log('getSession');
     var token = getRequestToken(req);
     checkToken(token).then(payload => {
       res.status(200).send(payload);
@@ -85,15 +87,22 @@ function UserAPIFactory(webapp, userService, config){
     });
   }
 
-  //setup routes
-  router.post('/register', register);
-  router.get('/session', getSession);
-  router.post('/session', createSession);
-  router.del('/session', destroySession);
-
   return {
     start(){
+      var router = express.Router();
+
+      //setup routes
+      router.post('/register', register);
+      router.get('/session', getSession);
+      router.post('/session', createSession);
+      router.delete('/session', destroySession);
+      //TESTing api
+      router.get('/test', (req,res)=>{
+        res.send('Yo there!');
+      });
+
       app.use('/api', router);
+      console.log('UserAPI attached');
     }
   }
 }
