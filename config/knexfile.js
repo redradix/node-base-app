@@ -14,15 +14,27 @@ module.exports = {
     }
   },
 
-  test: {
-    client: 'sqlite3',
+  //MySQL
+  test:{
+    client: 'mysql',
     connection: {
-      filename: '../__data/test.sqlite3'
-    },
-    migrations: {
-      tableName: 'knex_migrations'
+      host: '127.0.0.1',
+      user: 'food',
+      password: 'food',
+      database: 'food_test',
+      charset: 'utf8'
     }
   }
+
+  // test: {
+  //   client: 'sqlite3',
+  //   connection: {
+  //     filename: '../__data/test.sqlite3'
+  //   },
+  //   migrations: {
+  //     tableName: 'knex_migrations'
+  //   }
+  // }
 
   // staging: {
   //   client: 'postgresql',

@@ -22,28 +22,27 @@ describe('User Service', () => {
     subject.create(fakeUser).then(user => {
       user.id.should.be.a.String;
       user.username.should.equal(fakeUser.username);
-      user.password.should.equal(fakeUser.password);
       fakeUserId = user.id
       done();
-    });
+    })
+    .catch(done);
   });
 
   it('Should get a User by id', done => {
     subject.getUserById(fakeUserId).then(user => {
-        user.id.should.equal(fakeUserId);
-        user.username.should.equal(fakeUser.username);
-        user.password.should.equal(fakeUser.password);
-        done();
-      });
+      user.id.should.equal(fakeUserId);
+      user.username.should.equal(fakeUser.username);
+      done();
+    })
+    .catch(done)
   });
 
   it('Should login a user with username and password', done => {
     subject.login('test', 'test').then(user => {
-      user.id.should.equal(fakeUserId);
-      user.username.should.equal(fakeUser.username);
-      user.password.should.equal(fakeUser.password);
+      user.username.should.equal('test');
       done();
     })
+    .catch(done);
   })
 
   it('Should reject login a user with wrong password', done => {

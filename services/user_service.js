@@ -1,23 +1,42 @@
 var uuid = require('uuid');
+var bcrypt = require('bcrypt');
+var _ = require('lodash');
 
 function UserServiceFactory(db){
   var User = db('user');
+
+  function encryptPassword(pwd){
+    return new Promise((res, rej) => {
+      bcrypt.genSalt(10, (err, salt) => {
+        if(err) return rej(err);
+        bcrypt.hash(pwd, salt, (err, hash) => {
+          if(err) return rej(err);
+          return res(hash);
+        });
+      });
+    });
+  }
+
+  function checkPassword(pwd, hash){
+    return new Promise((res, rej) => {
+      bcrypt.compare(pwd, hash, (err, ok) => {
+        return err ? rej(err): res(ok);
+      });
+    });
+  }
 
   function getUserById(id){
     return User.where({ id }).first();
   }
 
   function create(user){
-    //create user Id
-    user.id = uuid.v1();
-    return User.insert(user).then(rows => {
-      if(rows[0] === 1){
-        return user;
-      }
-      else {
-        throw new Error('Insert failed');
-      }
-    });
+    var newUser = Object.assign({ id: uuid.v4() }, user);
+    return encryptPassword(newUser.password).then(hash => {
+      newUser.password = hash;
+      return User.insert(newUser).then(rows => {
+        return newUser;
+      });
+    })
   }
 
   function getByUsername(username){
@@ -26,12 +45,13 @@ function UserServiceFactory(db){
 
   function login(username, password){
     return getByUsername(username).then(u => {
-      if(u.password === password){
+      if(!u) throw new Error('Wrong username');
+      return checkPassword(password, u.password).then(isEqual => {
+        if(!isEqual){
+          throw new Error('Wrong password');
+        }
         return u;
-      }
-      else {
-        throw new Error('Wrong password');
-      }
+      });
     });
   }
 

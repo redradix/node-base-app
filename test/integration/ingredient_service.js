@@ -18,6 +18,8 @@ describe('Ingredient Service', () => {
     stock: 100
   };
 
+  var fakeCheeseId;
+
   it('Should return an object', () => {
     subject.should.be.an.Object;
     subject.getAll.should.be.a.Function;
@@ -29,20 +31,19 @@ describe('Ingredient Service', () => {
 
   it('Should create a new ingredient', done => {
     subject.create(fakeCheese).then(ingredient => {
-      ingredient.should.deepEqual(fakeCheese);
+      fakeCheeseId = ingredient.id;
+      ingredient.should.have.property('name', fakeCheese.name);
       done();
     })
-    .catch(err => {
-      console.log('FAIL!');
-      should.fail();
-    })
+    .catch(done)
   });
 
   it('Should return an ingredient by id', done => {
-    subject.getById(fakeCheese.id).then(cheese => {
-      cheese.should.deepEqual(fakeCheese);
+    subject.getById(fakeCheeseId).then(cheese => {
+      cheese.should.deepEqual(Object.assign({ id: fakeCheeseId }, fakeCheese));
       done();
     })
+    .catch(done)
   });
 
   it('Should return all ingredients', done => {
@@ -51,25 +52,28 @@ describe('Ingredient Service', () => {
       ingredients.should.be.an.Array;
       ingredients.should.have.length(1);
       done();
-    });
+    })
+    .catch(done);
   });
 
   it('Should allow updating an ingredient', done => {
     var updatedIngredient = Object.assign({}, fakeCheese, { cost: 10 });
-    subject.update(updatedIngredient).then(i => {
+    subject.update(fakeCheeseId, updatedIngredient).then(i => {
       i.cost.should.equal(10);
       done();
     })
+    .catch(done)
   });
 
   it('Should allow deleting an ingredient by id', done => {
-    subject.deleteById(fakeCheese.id).then(() => {
+    subject.deleteById(fakeCheeseId).then(() => {
       //now try to fetch it by id
-      subject.getById(fakeCheese.id).then(ingredient => {
+      subject.getById(fakeCheeseId).then(ingredient => {
         should(ingredient, undefined);
         done();
       })
     })
+    .catch(done)
   })
 
 

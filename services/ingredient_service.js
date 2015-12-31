@@ -13,20 +13,18 @@ function IngredientServiceFactory(db){
   }
 
   function create(ingredient){
-    ingredient.id = uuid.v1();
-    return I.insert(ingredient).then(rows => {
-      if(rows[0] === 1){
-        return ingredient;
-      }
-      throw new Error('Ingredient insert failed');
+    var newIngredient = Object.assign({}, { id: uuid.v4() }, ingredient);
+
+    return I.insert(newIngredient).then(rows => {
+      return newIngredient;
     });
   }
 
-  function update(ingredient){
-    return I.where({ id: ingredient.id }).update(ingredient)
+  function update(id, ingredient){
+    return I.where({ id: id}).update(ingredient)
       .then(affectedRows => {
         if(affectedRows === 1){
-          return ingredient;
+          return Object.assign({}, ingredient);
         }
         throw new Error('Ingredient update failed');
       });
