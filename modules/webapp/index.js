@@ -13,9 +13,12 @@ function WebAppFactory(config){
   });
 
   app.all('/api/*', bodyParser.json());
+  app.use((err,req,res,next) => {
+    console.log('Express error', err);
+  });
 
   function start(){
-    appServer = app.listen(config.host, config.port, (err) => {
+    appServer = app.listen(config.port, (err) => {
       if(err){
         console.log('Express could not be started', err);
         //throw err;

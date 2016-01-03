@@ -45,10 +45,11 @@ function UserAPIFactory(webapp, userService, config){
       username: req.body.username,
       password: req.body.password
     }
+    console.log('Register', newUser);
     userService.create(newUser)
       .then(user => {
         console.log('User created', user);
-        return createSession(req, res);
+        createSession(req, res);
       });
   }
 
@@ -87,23 +88,23 @@ function UserAPIFactory(webapp, userService, config){
     });
   }
 
+  var router = express.Router();
+
+  //setup routes
+  router.post('/register', register);
+  router.get('/session', getSession);
+  router.post('/session', createSession);
+  router.delete('/session', destroySession);
+  //TESTing api
+  router.get('/test', (req,res)=>{
+    res.send('Yo there!');
+  });
+
+  app.use('/api', router);
+  console.log('UserAPI attached');
+
   return {
-    start(){
-      var router = express.Router();
 
-      //setup routes
-      router.post('/register', register);
-      router.get('/session', getSession);
-      router.post('/session', createSession);
-      router.delete('/session', destroySession);
-      //TESTing api
-      router.get('/test', (req,res)=>{
-        res.send('Yo there!');
-      });
-
-      app.use('/api', router);
-      console.log('UserAPI attached');
-    }
   }
 }
 
