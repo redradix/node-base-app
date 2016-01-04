@@ -4,6 +4,7 @@ var container = require('./containerConfig');
 process.name = 'foodapp';
 
 container.get('userApi');
+container.get('ingredientApi');
 container.start('webapp');
 
 

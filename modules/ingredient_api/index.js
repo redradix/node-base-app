@@ -9,12 +9,15 @@ var express = require('express');
 function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
   var app = webapp.app;
 
-  function getIngredient(ingredientId, req, res, next){
+  function getIngredient(req, res, next, ingredientId){
     if(!ingredientId){
       res.status(404).end();
     }
     else {
       ingredientService.getById(ingredientId).then(ingredient => {
+        if(!ingredient){
+          return res.status(404).end();
+        }
         req.ingredient = ingredient;
         next();
       });
@@ -37,6 +40,7 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
   }
 
   function getAll(req, res){
+    console.log('Ingredients.getAll');
     ingredientService.getAll().then(ingredients => {
       res.send({
         type: 'ingredients',
@@ -86,15 +90,20 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
 
   }
 
-  var router = express.Router();
+
   //all routes are secure
-  router.all(httpSecurity.requireToken);
-  router.param('id', getIngredient);
-  router.get('/ingredients', getAll);
-  router.get('/ingredients/:id', getById);
-  router.post('/ingredients', create);
-  router.put('/ingredients/:id', update);
-  router.delete('/ingredients/:id', deleteById);
+
+  app.param('ingredientId', getIngredient);
+  app.get('/api/ingredients', httpSecurity.requireToken, getAll);
+  app.get('/api/ingredients/:ingredientId', httpSecurity.requireToken, getById);
+  app.post('/api/ingredients', httpSecurity.requireToken, create);
+  app.put('/api/ingredients/:ingredientId', httpSecurity.requireToken, update);
+  app.delete('/api/ingredients/:ingredientId', httpSecurity.requireToken, deleteById);
+  //app.use('/api', router);
+
+  console.log('Ingredient API attached');
+
+  return {}
 
 }
 
