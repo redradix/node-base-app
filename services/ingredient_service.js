@@ -14,7 +14,7 @@ function IngredientServiceFactory(db, validator){
   }
 
   function getById(id){
-    return I.where({ id }).first();
+    return I.where('id', id).first();
   }
 
   function create(ingredient){
@@ -28,12 +28,10 @@ function IngredientServiceFactory(db, validator){
 
   function update(id, ingredient){
     return validateIngredient(ingredient).then(() => {
-      return I.where({ id: id}).update(ingredient)
-      .then(affectedRows => {
-        if(affectedRows === 1){
+      return I.where('id', id).update(ingredient)
+      .then(ing => {
+          console.log('Updated OK', ing);
           return Object.assign({}, ingredient);
-        }
-        throw new Error('Ingredient update failed');
       });
     });
   }

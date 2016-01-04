@@ -69,21 +69,46 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
       stock: req.body.stock
     }
 
-    var errors = validateIngredient(postData);
-    if(errors.length){
-      res.status(406).send({
-        type: 'ingredient',
-        success: false,
-        errors: errors
+    ingredientService.create(postData)
+      .then(ing => {
+        res.send({
+          type: 'ingredient',
+          success: true,
+          data: ing
+        })
       })
-    }
-    else {
-      ingredientService.create(postData)
-    }
+      .catch(err => {
+        console.log('Ingredient API create failed', err);
+        res.status(406).send({
+          type: 'ingredient',
+          success: false,
+          error: err
+        });
+      });
   }
 
   function update(req, res){
-
+    var postedIngredient = {
+      name: req.body.name,
+      cost: req.body.cost,
+      stock: req.body.sock
+    }
+    console.log('Updating', postedIngredient);
+    ingredientService.update(req.params.ingredientId, postedIngredient)
+      .then(ing => {
+        res.send({
+          type: 'ingredient',
+          success: true,
+          data: ing
+        })
+      })
+      .catch(err => {
+        res.status(406).send({
+          type: 'ingredient',
+          success: false,
+          errors: err
+        });
+      })
   }
 
   function deleteById(req, res){

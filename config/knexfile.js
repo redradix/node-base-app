@@ -4,7 +4,7 @@ var path = require('path');
 module.exports = {
 
   development: {
-    debug: true,
+    debug: false,
     client: 'mysql',
     connection: {
       host: '127.0.0.1',
