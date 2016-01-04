@@ -1,6 +1,6 @@
 var should = require('should');
 
-describe.only('Ingredient Service', () => {
+describe('Ingredient Service', () => {
   var dbHelper = require('../helpers/db');
   var schemas = require('../../core/schemas'),
       validator = require('../../services/validation_service')(schemas);
