@@ -4,6 +4,7 @@ var path = require('path');
 module.exports = {
 
   development: {
+    debug: true,
     client: 'mysql',
     connection: {
       host: '127.0.0.1',
@@ -29,47 +30,5 @@ module.exports = {
       charset: 'utf8'
     }
   }
-
-  // test: {
-  //   client: 'sqlite3',
-  //   connection: {
-  //     filename: '../__data/test.sqlite3'
-  //   },
-  //   migrations: {
-  //     tableName: 'knex_migrations'
-  //   }
-  // }
-
-  // staging: {
-  //   client: 'postgresql',
-  //   connection: {
-  //     database: 'my_db',
-  //     user:     'username',
-  //     password: 'password'
-  //   },
-  //   pool: {
-  //     min: 2,
-  //     max: 10
-  //   },
-  //   migrations: {
-  //     tableName: 'knex_migrations'
-  //   }
-  // },
-
-  // production: {
-  //   client: 'postgresql',
-  //   connection: {
-  //     database: 'my_db',
-  //     user:     'username',
-  //     password: 'password'
-  //   },
-  //   pool: {
-  //     min: 2,
-  //     max: 10
-  //   },
-  //   migrations: {
-  //     tableName: 'knex_migrations'
-  //   }
-  // }
 
 };

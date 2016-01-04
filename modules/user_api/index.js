@@ -1,110 +1,73 @@
 var express = require('express');
-var jwt = require('jsonwebtoken');
-var _ = require('lodash');
 
-function UserAPIFactory(webapp, userService, config){
+function UserAPIFactory(webapp, userService, httpSecurity, jwtService, config){
   var app = webapp.app;
 
-  function sanitizeUser(u){
-    return _.omit(u, 'password');
-  }
-
-  function createToken(user){
-    return new Promise((resolve,reject) => {
-      var payload =  {
-        id: user.id,
-        username: user.username,
-      };
-
-      jwt.sign(payload, config.jwtsecret, { expiresIn: '24h' }, (token) => {
-        resolve(token);
-      });
-    });
-  }
-
-  function checkToken(token){
-    return new Promise((resolve,reject) => {
-      jwt.verify(token, config.jwtsecret, (err, decoded) => {
-        return err ? reject(err) : resolve(decoded);
-      });
-    });
-  }
-
-  function getRequestToken(req){
-    var auth = req.headers['Authorization'];
-    if(!auth) return null;
-    var parts = auth.split(/s/);
-    if(parts.length !== 2){
-      return null;
-    }
-    return parts[1];
-  }
-
-  function register(req, res){
+  function register(req, res, next){
     var newUser = {
       username: req.body.username,
       password: req.body.password
     }
-    console.log('Register', newUser);
+    console.log('UserAPI - register', req.body);
     userService.create(newUser)
       .then(user => {
-        console.log('User created', user);
-        createSession(req, res);
+        next();
       });
   }
 
   function createSession(req,res){
+    console.log('UserAPI - createSession', req.body);
+    if(!req.body.username || !req.body.password){
+      return res.send(400).end();
+    }
     userService.login(req.body.username, req.body.password)
       .then(user => {
         console.log('Login OK', user);
         //create token
-        var token = createToken(user);
-        res.status(200).send({
-          success: true,
-          type: 'session',
-          data: {
-            token
-          }
-        });
+        jwtService.createToken(user).then(token => {
+          res.status(200).send({
+            success: true,
+            type: 'session',
+            data: {
+              token
+            }
+          });
+        })
+      })
+      .catch(err => {
+        console.log('Login failed', err);
+        res.status(404).end();
       });
   }
 
   function getSession(req,res){
-    console.log('getSession');
-    var token = getRequestToken(req);
-    checkToken(token).then(payload => {
-      res.status(200).send(payload);
-    })
-    .catch(err => {
-      //401 - Unauthorized
-      res.status(401).end();
+    //security middleware stores user data in req.user
+    res.status(200).send({
+      type: 'session',
+      success: true,
+      data: req.user
     });
   }
 
   function destroySession(req,res){
-    var token = getRequestToken(req);
-    checkToken(token).then(payload => {
-      res.status(200).end();
-    });
+    //nothing to do here, client should discard existing token
+    res.status(200).send();
   }
 
   var router = express.Router();
 
-  //setup routes
-  router.post('/register', register);
-  router.get('/session', getSession);
+  //register, it will automatically login the user
+  router.post('/register', register, createSession);
+  //login - create a session
   router.post('/session', createSession);
-  router.delete('/session', destroySession);
-  //TESTing api
-  router.get('/test', (req,res)=>{
-    res.send('Yo there!');
-  });
+  //protected routes should include httpSecurity.requireToken in their middleware chain
+  router.get('/session', httpSecurity.requireToken, getSession);
+
+  router.delete('/session', httpSecurity.requireToken, destroySession);
 
   app.use('/api', router);
-  console.log('UserAPI attached');
 
   return {
-
   }
 }
 

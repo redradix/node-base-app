@@ -1,7 +1,8 @@
 var knex = require('knex');
 
 function DBFactory(dbConfig){
-  return knex(dbConfig);
+  var env = process.env.NODE_ENV || 'development';
+  return knex(dbConfig[env]);
 }
 
 module.exports = DBFactory;

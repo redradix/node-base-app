@@ -33,7 +33,9 @@ function UserServiceFactory(db){
     var newUser = Object.assign({ id: uuid.v4() }, user);
     return encryptPassword(newUser.password).then(hash => {
       newUser.password = hash;
+      console.log('UserService create', newUser);
       return User.insert(newUser).then(rows => {
+        console.log('UserService created', newUser);
         return newUser;
       });
     })

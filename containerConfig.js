@@ -5,12 +5,25 @@ container.register('webConfig', [], require('./config/http'));
 
 //db
 container.register('db', ['dbConfig'], require('./services/db'));
-//services
+
+//*** SERVICES ****
+//JSON Web Token service
+container.register('jwtService', ['webConfig'], require('./services/jwt_service'));
+//Express security
+container.register('httpSecurity', ['jwtService', 'webConfig'], require('./services/http_security'));
+//User Service
 container.register('userService', ['db'], require('./services/user_service'));
+//Ingredient Service
 container.register('ingredientService', ['db'], require('./services/ingredient_service'));
 
-//modules
+//**** MODULES *****
+//Express app
 container.register('webapp', ['webConfig'], require('./modules/webapp'));
-container.register('userApi', ['webapp', 'userService', 'webConfig'], require('./modules/user_api'));
+//User REST API - register, login, logout
+container.register('userApi', ['webapp', 'userService', 'httpSecurity', 'jwtService', 'webConfig'], require('./modules/user_api'));
+//Ingredient REST API
+//Dish REST API
+//Order REST API
+//
 
 module.exports = container;
