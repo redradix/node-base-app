@@ -1,6 +1,6 @@
 var uuid = require('uuid');
 
-function IngredientServiceFactory(db){
+function IngredientServiceFactory(db, validator){
   var I = db('ingredient');
 
   function getAll(){

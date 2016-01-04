@@ -2,7 +2,7 @@ var uuid = require('uuid');
 var bcrypt = require('bcrypt');
 var _ = require('lodash');
 
-function UserServiceFactory(db){
+function UserServiceFactory(db, validator){
   var User = db('user');
 
   function encryptPassword(pwd){
