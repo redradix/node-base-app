@@ -1,9 +1,11 @@
 var should = require('should');
 
-describe('Ingredient Service', () => {
+describe.only('Ingredient Service', () => {
   var dbHelper = require('../helpers/db');
+  var schemas = require('../../core/schemas'),
+      validator = require('../../services/validation_service')(schemas);
   var factory = require('../../services/ingredient_service'),
-      subject = factory(dbHelper.knex);
+      subject = factory(dbHelper.knex, validator);
 
 
   var fakeCheese = {
@@ -38,6 +40,21 @@ describe('Ingredient Service', () => {
     .catch(done)
   });
 
+  it('Should avoid creating a non-valid ingredient', done => {
+    var wrongIngredient = {
+      name: 'foo',
+      cost: 25.5,
+      stock: null
+    }
+
+    subject.create(wrongIngredient)
+    .catch(errors => {
+      errors.should.be.an.Array;
+      errors.should.have.length(1);
+      done();
+    });
+  });
+
   it('Should return an ingredient by id', done => {
     subject.getById(fakeCheeseId).then(cheese => {
       cheese.should.deepEqual(Object.assign({ id: fakeCheeseId }, fakeCheese));
@@ -64,6 +81,16 @@ describe('Ingredient Service', () => {
     })
     .catch(done)
   });
+
+  it('Should reject updating an invalid ingredient', done => {
+    var updatedIngredient = Object.assign({}, fakeCheese, { name: null });
+    subject.update(fakeCheeseId, updatedIngredient)
+    .catch(errors => {
+      errors.should.be.an.Array;
+      errors.should.have.length(1);
+      done();
+    })
+  })
 
   it('Should allow deleting an ingredient by id', done => {
     subject.deleteById(fakeCheeseId).then(() => {

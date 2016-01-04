@@ -3,6 +3,11 @@ var uuid = require('uuid');
 function IngredientServiceFactory(db, validator){
   var I = db('ingredient');
 
+  function validateIngredient(ing){
+    var res = validator.validate('Ingredient', ing);
+    return res.valid ? Promise.resolve(ing) : Promise.reject(res.errors);
+  }
+
   function getAll(){
     //I.select().orderBY doesn't work!!
     return db.select('*').from('ingredient').orderBy('name');
@@ -14,20 +19,23 @@ function IngredientServiceFactory(db, validator){
 
   function create(ingredient){
     var newIngredient = Object.assign({}, { id: uuid.v4() }, ingredient);
-
-    return I.insert(newIngredient).then(rows => {
-      return newIngredient;
+    return validateIngredient(newIngredient).then(newIngredient => {
+      return I.insert(newIngredient).then(rows => {
+        return newIngredient;
+      });
     });
   }
 
   function update(id, ingredient){
-    return I.where({ id: id}).update(ingredient)
+    return validateIngredient(ingredient).then(() => {
+      return I.where({ id: id}).update(ingredient)
       .then(affectedRows => {
         if(affectedRows === 1){
           return Object.assign({}, ingredient);
         }
         throw new Error('Ingredient update failed');
       });
+    });
   }
 
   function deleteById(id){

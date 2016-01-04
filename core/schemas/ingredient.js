@@ -9,6 +9,7 @@ module.exports = {
     name: {
       type: 'string',
       maxLength: 50,
+      minLength: 1,
       required: true
     },
     cost: {

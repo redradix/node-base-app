@@ -1,7 +1,7 @@
 var should = require('should');
 var uuid = require('uuid');
 
-describe.only('Validator service', () => {
+describe('Validator service', () => {
   var schemas = require('../../core/schemas');
   var subject = require('../../services/validation_service')(schemas);
 
