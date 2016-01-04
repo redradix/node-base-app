@@ -16,9 +16,11 @@ GRANT ALL PRIVILEGES ON food_test.* TO 'food'@'localhost' IDENTIFIED BY 'food';
 
 ## Migrations
 Available npm scripts:
+
 1. `npm run migrate:dev` - Executes dev migrations on `food` database
 2. `npm run migrate:test` - Executes test migrations on `food_test` database
 3. `npm test` - Runs server tests
 4. `npm start` - Start the app
+
 
 One of the migrations creates an application user `admin` with password `admin` in the database.
