@@ -59,7 +59,23 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
   }
 
   function create(req, res){
-    //expects name, cost, stock
+    var postData = {
+      name: req.body.name,
+      cost: req.body.cost,
+      stock: req.body.stock
+    }
+
+    var errors = validateIngredient(postData);
+    if(errors.length){
+      res.status(406).send({
+        type: 'ingredient',
+        success: false,
+        errors: errors
+      })
+    }
+    else {
+      ingredientService.create(postData)
+    }
   }
 
   function update(req, res){
