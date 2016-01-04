@@ -1,4 +1,5 @@
 # Node base app - Restaurant API + user security
+Node.js version >=4 required. 
 ## Dependencies
 - Local project dependencies (`npm install`)
 - Global dependencies: `mocha` for running tests, `knex` for running migrations
