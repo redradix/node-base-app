@@ -11,7 +11,6 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
 
   function getIngredient(req, res, next, ingredientId){
     if(!ingredientId){
-      console.log('No ingredientId');
       res.status(404).end();
     }
     else {
@@ -26,7 +25,6 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
   }
 
   function getAll(req, res){
-    console.log('Ingredients.getAll');
     ingredientService.getAll().then(ingredients => {
       res.send({
         type: 'ingredients',
@@ -80,7 +78,6 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
       cost: req.body.cost,
       stock: req.body.stock
     }
-    console.log('Updating', postedIngredient);
     ingredientService.update(req.params.ingredientId, postedIngredient)
       .then(ing => {
         res.send({

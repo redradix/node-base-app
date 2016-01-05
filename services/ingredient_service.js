@@ -16,7 +16,7 @@ function IngredientServiceFactory(db, validator){
 
   function getById(id){
     //console.log('IngSERVICE getById(' + id + ')');
-    return db('ingredient').where({id: id});
+    return db('ingredient').where({id: id}).first();
   }
 
   function create(ingredient){
