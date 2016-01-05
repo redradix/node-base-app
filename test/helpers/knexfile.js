@@ -4,7 +4,7 @@ module.exports = {
   //MySQL
   test:{
     client: 'mysql',
-    debug: true,
+    debug: false,
     connection: {
       host: '127.0.0.1',
       user: 'food',

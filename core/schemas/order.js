@@ -22,6 +22,7 @@ module.exports = {
     },
     dishes: {
       type: 'array',
+      required: true,
       minItems: 1,
       items: {
         type: 'object',

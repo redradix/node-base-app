@@ -27,7 +27,6 @@ function DishServiceFactory(db, validator){
 
   function create(dish){
     var newDish = Object.assign({}, { id: uuid.v4() }, dish);
-    console.log('Creating dish', dish);
     return _validateDish(newDish)
       .then(dish => db('dish').insert(_.omit(dish, 'ingredients')))
       .then(res => _saveIngredients(newDish.id, newDish.ingredients))

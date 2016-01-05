@@ -20,6 +20,10 @@ describe('Ingredient Service', () => {
     stock: 100
   };
 
+  before(done => {
+    dbHelper.clearTables().then(() => done());
+  })
+
   var fakeCheeseId;
 
   it('Should return an object', () => {

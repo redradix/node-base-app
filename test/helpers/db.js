@@ -6,7 +6,7 @@ Clears data, applies migrations, returns knex instance
 
 */
 
-var tablesToClear = ['user', 'dish_ingredient', 'order_dish', 'order','ingredient', 'dish'];
+var tablesToClear = ['dish_ingredient', 'order_dish', 'order','ingredient', 'dish', 'user'];
 var testDbConfig = require('./knexfile').test,
     knex = require('knex')(testDbConfig);
 
@@ -23,6 +23,7 @@ before(done => {
 });
 
 after(done => {
+  console.log('Clearing tables after all tests');
   clearTables().then(() => done());
 })
 

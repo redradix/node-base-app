@@ -3,6 +3,7 @@ var uuid = require('uuid');
 
 describe('Dish Service', () => {
   var dbHelper = require('../helpers/db');
+  var seedHelper = require('../helpers/fakeData');
   var factory = require('../../services/dish_service'),
       schemas = require('../../core/schemas'),
       validationService = require('../../services/validation_service')(schemas),
