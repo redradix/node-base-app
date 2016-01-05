@@ -88,10 +88,11 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
   }
 
   function update(req, res){
+    console.log('update', req.body);
     var postedIngredient = {
       name: req.body.name,
       cost: req.body.cost,
-      stock: req.body.sock
+      stock: req.body.stock
     }
     console.log('Updating', postedIngredient);
     ingredientService.update(req.params.ingredientId, postedIngredient)

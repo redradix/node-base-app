@@ -27,6 +27,7 @@ function IngredientServiceFactory(db, validator){
   }
 
   function update(id, ingredient){
+    console.log('ingService update', id, ingredient);
     return validateIngredient(ingredient).then(() => {
       return I.where('id', id).update(ingredient)
       .then(ing => {
