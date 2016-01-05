@@ -9,8 +9,8 @@ Install MySQL (on Mac, using homebrew is recommended, `brew install mysql`) and 
 
 Create the databases (dev and test) and the application DB user from MySQL CLI (`mysql -u root`):
 ```
-CREATE DATABASE 'food';
-CREATE DATABASE 'food_test';
+CREATE DATABASE food;
+CREATE DATABASE food_test;
 GRANT ALL PRIVILEGES ON food.* TO 'food'@'localhost' IDENTIFIED BY 'food';
 GRANT ALL PRIVILEGES ON food_test.* TO 'food'@'localhost' IDENTIFIED BY 'food';
 ```

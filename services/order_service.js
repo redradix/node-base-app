@@ -17,7 +17,6 @@ function OrderServiceFactory(db, validator){
           }
         }
       }))
-
   }
 
   function getById(id){

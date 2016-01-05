@@ -23,6 +23,8 @@ container.register('userService', ['db', 'validationService'], require('./servic
 container.register('ingredientService', ['db', 'validationService'], require('./services/ingredient_service'));
 //Dish Service
 container.register('dishService', ['db', 'validationService'], require('./services/dish_service'));
+//Order Service
+container.register('orderService', ['db', 'validationService'], require('./services/order_service'));
 
 //**** MODULES *****
 //Express app
@@ -34,6 +36,6 @@ container.register('ingredientApi', ['webapp', 'ingredientService', 'httpSecurit
 //Dish REST API
 container.register('dishApi', ['webapp', 'dishService', 'httpSecurity'], require('./modules/dish_api'));
 //Order REST API
-//
+container.register('orderApi', ['webapp', 'orderService', 'httpSecurity'], require('./modules/order_api'));
 
 module.exports = container;
