@@ -1,7 +1,8 @@
 var uuid = require('uuid');
 
 function IngredientServiceFactory(db, validator){
-  var I = db('ingredient');
+  //WARNING: Don't do this!!! Causes the query params to be cached
+  //var I = db('ingredient');
 
   function validateIngredient(ing){
     var res = validator.validate('Ingredient', ing);
@@ -14,13 +15,14 @@ function IngredientServiceFactory(db, validator){
   }
 
   function getById(id){
-    return I.where('id', id).first();
+    //console.log('IngSERVICE getById(' + id + ')');
+    return db('ingredient').where({id: id});
   }
 
   function create(ingredient){
     var newIngredient = Object.assign({}, { id: uuid.v4() }, ingredient);
     return validateIngredient(newIngredient).then(newIngredient => {
-      return I.insert(newIngredient).then(rows => {
+      return db('ingredient').insert(newIngredient).then(rows => {
         return newIngredient;
       });
     });
@@ -29,7 +31,7 @@ function IngredientServiceFactory(db, validator){
   function update(id, ingredient){
     console.log('ingService update', id, ingredient);
     return validateIngredient(ingredient).then(() => {
-      return I.where('id', id).update(ingredient)
+      return db('ingredient').where('id', id).update(ingredient)
       .then(ing => {
           console.log('Updated OK', ing);
           return Object.assign({}, ingredient);
@@ -38,7 +40,7 @@ function IngredientServiceFactory(db, validator){
   }
 
   function deleteById(id){
-    return I.where({ id }).delete();
+    return db('ingredient').where('id', id).delete();
   }
 
   return {

@@ -11,6 +11,7 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
 
   function getIngredient(req, res, next, ingredientId){
     if(!ingredientId){
+      console.log('No ingredientId');
       res.status(404).end();
     }
     else {
@@ -22,21 +23,6 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
         next();
       });
     }
-  }
-
-  function validateIngredient(data){
-    var errors = [];
-    if(!data.name || data.name.toString().trim().length === 0){
-      errors.push({ field: 'name', message: 'Ingredient must have a name'});
-    }
-    if(!data.cost || isNaN(parseFloat(data.cost))){
-      errors.push({ field: 'cost', message: 'Ingredient must have a valid floating-point cost'});
-    }
-    if(!data.stock || isNaN(parseInt(data.stock))){
-      errors.push({ field: 'stock', message: 'Ingredient must have a valid integer stock'});
-    }
-
-    return errors;
   }
 
   function getAll(req, res){
@@ -113,7 +99,14 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
   }
 
   function deleteById(req, res){
-
+    ingredientService.deleteById(req.ingredient.id)
+      .then(() => {
+        res.status(200).end();
+      })
+      .catch(err => {
+        console.log('Error DELETE ingredient', err);
+        res.status(500).end();
+      })
   }
 
 

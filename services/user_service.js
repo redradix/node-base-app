@@ -3,8 +3,6 @@ var bcrypt = require('bcrypt');
 var _ = require('lodash');
 
 function UserServiceFactory(db, validator){
-  var User = db('user');
-
   function encryptPassword(pwd){
     return new Promise((res, rej) => {
       bcrypt.genSalt(10, (err, salt) => {
@@ -26,14 +24,14 @@ function UserServiceFactory(db, validator){
   }
 
   function getUserById(id){
-    return User.where({ id }).first();
+    return db('user').where({ id }).first();
   }
 
   function create(user){
     var newUser = Object.assign({ id: uuid.v4() }, user);
     return encryptPassword(newUser.password).then(hash => {
       newUser.password = hash;
-      return User.insert(newUser).then(rows => {
+      return db('user').insert(newUser).then(rows => {
         //console.log('UserService created', newUser);
         return newUser;
       });
@@ -41,7 +39,7 @@ function UserServiceFactory(db, validator){
   }
 
   function getByUsername(username){
-    return User.where({ username }).first();
+    return db('user').where({ username }).first();
   }
 
   function login(username, password){

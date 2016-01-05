@@ -5,7 +5,8 @@ process.name = 'foodapp';
 
 container.get('userApi');
 container.get('ingredientApi');
-var express = container.start('webapp');
+var express = container.get('webapp');
+express.start();
 
 
 // process.on('exit', function(){
