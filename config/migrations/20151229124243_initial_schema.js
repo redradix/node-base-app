@@ -29,7 +29,7 @@ exports.up = function(knex, Promise) {
     //Dish_Ingredient
     knex.schema.createTable('dish_ingredient', t => {
       t.uuid('dishId').notNullable().references('id').inTable('dish');
-      t.uuid('ingredientId').notNullable().references('id').inTable('dish');
+      t.uuid('ingredientId').notNullable().references('id').inTable('ingredient');
       t.decimal('amount').notNullable().defaultTo(1);
     }),
     //Order

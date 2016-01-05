@@ -17,6 +17,8 @@ module.exports = {
     },
     ingredients: {
       type: 'array',
+      required: true,
+      minItems: 1,
       items: {
         type: 'object',
         properties: {

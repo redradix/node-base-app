@@ -15,6 +15,7 @@ function WebAppFactory(config){
   app.all('/api/*', bodyParser.json());
   app.use((err,req,res,next) => {
     console.log('Express error', err);
+    res.send(err.statusCode).end();
   });
 
   function start(){

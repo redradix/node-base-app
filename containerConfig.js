@@ -29,9 +29,10 @@ container.register('dishService', ['db', 'validationService'], require('./servic
 container.register('webapp', ['webConfig'], require('./modules/webapp'));
 //User REST API - register, login, logout
 container.register('userApi', ['webapp', 'userService', 'httpSecurity', 'jwtService', 'webConfig'], require('./modules/user_api'));
-container.register('ingredientApi', ['webapp', 'ingredientService', 'httpSecurity', 'webConfig'], require('./modules/ingredient_api'));
 //Ingredient REST API
+container.register('ingredientApi', ['webapp', 'ingredientService', 'httpSecurity', 'webConfig'], require('./modules/ingredient_api'));
 //Dish REST API
+container.register('dishApi', ['webapp', 'dishService', 'httpSecurity'], require('./modules/dish_api'));
 //Order REST API
 //
 
