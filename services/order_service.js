@@ -54,8 +54,9 @@ function OrderServiceFactory(db, validator){
       .then(() => order);
   }
 
-  function deleteById(){
-
+  function deleteById(id){
+    return _clearOrderDishes(id)
+      .then(() => db('order').where({ id }).delete());
   }
 
   function _createOrderDishes(orderId, dishes){

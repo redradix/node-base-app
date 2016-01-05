@@ -72,12 +72,7 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
   }
 
   function update(req, res){
-    console.log('update', req.body);
-    var postedIngredient = {
-      name: req.body.name,
-      cost: req.body.cost,
-      stock: req.body.stock
-    }
+    var postedIngredient = Object.assign({}, req.ingredient, req.body);
     ingredientService.update(req.params.ingredientId, postedIngredient)
       .then(ing => {
         res.send({

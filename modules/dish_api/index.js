@@ -53,11 +53,34 @@ function DishAPIFactory(webapp, dishService, httpSecurity){
   }
 
   function update(req, res){
-
+    var updatedDish = Object.assign({}, req.dish, req.body);
+    dishService.update(req.dish.id, updatedDish)
+      .then(dish => {
+        res.send({
+          type: 'dish',
+          data: dish
+        })
+      })
+      .catch(err => {
+        res.status(406).send({
+          type: 'dish',
+          errors: [].concat(err)
+        })
+      })
   }
 
   function deleteById(req, res){
-
+    dishService.deleteById(req.dish.id)
+      .then(() => {
+        res.send(200)
+      })
+      .catch(err => {
+        console.log('Error deleting dish', err);
+        res.status(406).send({
+          type: 'dish',
+          errors: [].concat(err)
+        })
+      })
   }
 
   var app = webapp.app;
