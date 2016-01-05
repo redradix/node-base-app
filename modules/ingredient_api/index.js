@@ -66,7 +66,7 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
         res.status(406).send({
           type: 'ingredient',
           success: false,
-          error: err
+          errors: err
         });
       });
   }

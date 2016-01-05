@@ -21,6 +21,8 @@ container.register('validationService', ['schemas'], require('./services/validat
 container.register('userService', ['db', 'validationService'], require('./services/user_service'));
 //Ingredient Service
 container.register('ingredientService', ['db', 'validationService'], require('./services/ingredient_service'));
+//Dish Service
+container.register('dishService', ['db', 'validationService'], require('./services/dish_service'));
 
 //**** MODULES *****
 //Express app
