@@ -7,6 +7,8 @@ var validator = require('revalidator');
  *  Dependencies: JSON Schema index (see /core/schemas/index)
  */
 function ValidatorServiceFactory(schemas){
+
+  /* Validates an object againts a schema name */
   function validate(schemaName, obj){
     var results, schema;
     schema = schemas[schemaName];

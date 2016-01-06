@@ -1,46 +1,52 @@
 var uuid = require('uuid');
-
+/**
+ * Ingredient service - handles CRUD of ingredients
+ *
+ */
 function IngredientServiceFactory(db, validator){
   //WARNING: Don't do this!!! Causes the query params to be cached
   //var I = db('ingredient');
 
-  function validateIngredient(ing){
-    var res = validator.validate('Ingredient', ing);
-    return res.valid ? Promise.resolve(ing) : Promise.reject(res.errors);
-  }
-
+  /* Returns every ingredient */
   function getAll(){
-    //I.select().orderBY doesn't work!!
     return db.select('*').from('ingredient').orderBy('name');
   }
 
+  /* Returns a single ingredient */
   function getById(id){
-    //console.log('IngSERVICE getById(' + id + ')');
     return db('ingredient').where({id: id}).first();
   }
 
+  /* Inserts a new ingredient */
   function create(ingredient){
     var newIngredient = Object.assign({}, { id: uuid.v4() }, ingredient);
-    return validateIngredient(newIngredient).then(newIngredient => {
+    return _validateIngredient(newIngredient).then(newIngredient => {
       return db('ingredient').insert(newIngredient).then(rows => {
         return newIngredient;
       });
     });
   }
 
+  /* Updates an existing ingredient */
   function update(id, ingredient){
-    console.log('ingService update', id, ingredient);
-    return validateIngredient(ingredient).then(() => {
+    return _validateIngredient(ingredient).then(() => {
       return db('ingredient').where('id', id).update(ingredient)
       .then(ing => {
-          console.log('Updated OK', ing);
           return Object.assign({}, ingredient);
       });
     });
   }
 
+  /* Removes an ingredient by its id */
   function deleteById(id){
     return db('ingredient').where('id', id).delete();
+  }
+
+
+  /* Validates an ingredient using JSON Schema */
+  function _validateIngredient(ing){
+    var res = validator.validate('Ingredient', ing);
+    return res.valid ? Promise.resolve(ing) : Promise.reject(res.errors);
   }
 
   return {

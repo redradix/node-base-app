@@ -2,8 +2,10 @@ var should = require('should');
 
 describe('User Service', () => {
   var dbHelper = require('../helpers/db');
+  var schemas = require('../../core/schemas'),
+      validator = require('../../services/validation_service')(schemas);
   var factory = require('../../services/user_service'),
-      subject = factory(dbHelper.knex);
+      subject = factory(dbHelper.knex, validator);
 
   var fakeUserId;
   var fakeUser = {

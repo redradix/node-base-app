@@ -1,13 +1,12 @@
-var express = require('express');
 /**
- * Returns the Ingredient API module
+ * Returns the Ingredient API controller
  * @param {Object} webapp            Express module
  * @param {Object} ingredientService DB access for ingredients
  * @param {Object} httpSecurity      Express security middleware
- * @param {Object} config            Configuration
  */
-function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
-  var app = webapp.app;
+function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
+  var app = webapp.app,
+      router = webapp.apiRouter;
 
   function getIngredient(req, res, next, ingredientId){
     if(!ingredientId){
@@ -103,19 +102,16 @@ function IngredientAPIFactory(webapp, ingredientService, httpSecurity, config){
 
 
   //all routes are secure
-
-  app.param('ingredientId', getIngredient);
-  app.get('/api/ingredients', httpSecurity.requireToken, getAll);
-  app.get('/api/ingredients/:ingredientId', httpSecurity.requireToken, getById);
-  app.post('/api/ingredients', httpSecurity.requireToken, create);
-  app.put('/api/ingredients/:ingredientId', httpSecurity.requireToken, update);
-  app.delete('/api/ingredients/:ingredientId', httpSecurity.requireToken, deleteById);
-  //app.use('/api', router);
-
-  console.log('Ingredient API attached');
+  router.all('/ingredients/*', httpSecurity.requireToken);
+  router.param('ingredientId', getIngredient);
+  router.get('/ingredients', getAll);
+  router.get('/ingredients/:ingredientId', getById);
+  router.post('/ingredients', create);
+  router.put('/ingredients/:ingredientId', update);
+  router.delete('/ingredients/:ingredientId', deleteById);
 
   return {}
 
 }
 
-module.exports = IngredientAPIFactory;
+module.exports = IngredientControllerFactory;

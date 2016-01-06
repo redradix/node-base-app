@@ -1,10 +1,9 @@
-var express = require('express');
 /**
 
 Dish REST API
 
 */
-function DishAPIFactory(webapp, dishService, httpSecurity){
+function DishControllerFactory(webapp, dishService, httpSecurity){
 
   function getDishById(req, res, next, dishId){
     dishService.getById(dishId)
@@ -83,18 +82,19 @@ function DishAPIFactory(webapp, dishService, httpSecurity){
       })
   }
 
-  var app = webapp.app;
+  var router = webapp.apiRouter;
 
-  app.get('/api/dishes', httpSecurity.requireToken, getAll);
-  app.get('/api/dishes/:dishId', httpSecurity.requireToken, getById);
-  app.post('/api/dishes', httpSecurity.requireToken, create);
-  app.put('/api/dishes/:dishId', httpSecurity.requireToken, update);
-  app.delete('/api/dishes/:dishId', httpSecurity.requireToken, deleteById);
-  app.param('dishId', getDishById);
+  router.get('/dishes', httpSecurity.requireToken, getAll);
+  router.get('/dishes/:dishId', httpSecurity.requireToken, getById);
+  router.post('/dishes', httpSecurity.requireToken, create);
+  router.put('/dishes/:dishId', httpSecurity.requireToken, update);
+  router.delete('/dishes/:dishId', httpSecurity.requireToken, deleteById);
+  router.param('dishId', getDishById);
 
+  return {};
 
   console.log('Dish API attached');
 
 }
 
-module.exports = DishAPIFactory;
+module.exports = DishControllerFactory;

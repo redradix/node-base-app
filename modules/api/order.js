@@ -1,17 +1,18 @@
 
-function OrderAPIFactory(webapp, orderService, httpSecurity){
+function OrderControllerFactory(webapp, orderService, httpSecurity){
 
   function fetchOrder(req, res, next, orderId){
     orderService.getById(orderId)
       .then(order => {
         if(!order){
-          return res.send(404).end();
+          return res.status(404).end();
         }
         req.order = Object.assign({}, order, { createdAt: order.createdAt.getTime() });
         next();
       })
       .catch(err => {
-        return res.send(500).end();
+        console.log('Error fetching order', err);
+        return res.status(500).end();
       });
   }
 
@@ -78,18 +79,17 @@ function OrderAPIFactory(webapp, orderService, httpSecurity){
       .catch(err => res.status(406).send({ errors: [].concat(err)}));
   }
 
-  var app = webapp.app;
+  var router = webapp.apiRouter;
+  router.all('/orders*', httpSecurity.requireToken);
+  router.get('/orders', getAll);
+  router.post('/orders', create);
+  router.get('/orders/:orderId', getById);
+  router.put('/orders/:orderId', update);
+  router.delete('/orders/:orderId', deleteById);
+  router.param('orderId', fetchOrder);
 
-  app.get('/api/orders', httpSecurity.requireToken, getAll);
-  app.post('/api/orders', httpSecurity.requireToken, create);
-  app.get('/api/orders/:orderId', httpSecurity.requireToken, getById);
-  app.put('/api/orders/:orderId', httpSecurity.requireToken, update);
-  app.delete('/api/orders/:orderId', httpSecurity.requireToken, deleteById);
-  app.param('orderId', fetchOrder);
-
-  console.log('Order API attached');
   return {};
 
 }
 
-module.exports = OrderAPIFactory;
+module.exports = OrderControllerFactory;

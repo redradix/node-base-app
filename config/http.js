@@ -4,7 +4,9 @@ var httpConfig = {
   port: 8001,
   //security
   jwtsecret: 's3cr3ts11ff',
-  jwtexpiration: '24h'
+  jwtexpiration: '24h',
+  //api endpoint
+  apiPrefix: '/api'
 };
 
 module.exports = httpConfig;

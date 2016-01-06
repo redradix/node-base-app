@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 function WebAppFactory(config){
 
   var app = express();
+  var apiRouter = express.Router();
   var appServer;
 
   app.all((req,res,next) => {
@@ -12,13 +13,18 @@ function WebAppFactory(config){
     next();
   });
 
-  app.all('/api/*', bodyParser.json());
-  //Enable cross
-  app.use(function(req, res, next) {
+  app.all(config.apiPrefix + '/*', bodyParser.json());
+
+  //Enable cross domain
+  app.all(config.apiPrefix + '/*', function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
   });
+
+  //inject REST API router
+  app.use(config.apiPrefix, apiRouter);
+
   app.use((err,req,res,next) => {
     console.log('Express error', err);
     res.send(err.statusCode).end();
@@ -45,7 +51,9 @@ function WebAppFactory(config){
   return {
     start,
     stop,
-    app
+    app,
+    //expose the API router so that controllers can attach routes to it
+    apiRouter
   };
 
 

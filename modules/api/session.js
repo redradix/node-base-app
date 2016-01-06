@@ -1,7 +1,9 @@
-var express = require('express');
-
-function UserAPIFactory(webapp, userService, httpSecurity, jwtService, config){
-  var app = webapp.app;
+/**
+  Returns the Session API Controller
+*/
+function SessionControllerFactory(webapp, userService, httpSecurity, jwtService, config){
+  var app = webapp.app,
+      router = webapp.apiRouter;
 
   function register(req, res, next){
     var newUser = {
@@ -54,21 +56,17 @@ function UserAPIFactory(webapp, userService, httpSecurity, jwtService, config){
     res.status(200).send();
   }
 
-  var router = express.Router();
-
   //register, it will automatically login the user
   router.post('/register', register, createSession);
   //login - create a session
   router.post('/session', createSession);
   //protected routes should include httpSecurity.requireToken in their middleware chain
   router.get('/session', httpSecurity.requireToken, getSession);
-
   router.delete('/session', httpSecurity.requireToken, destroySession);
 
-  app.use('/api', router);
 
   return {
   }
 }
 
-module.exports = UserAPIFactory;
+module.exports = SessionControllerFactory;
