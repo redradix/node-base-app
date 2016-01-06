@@ -14,21 +14,25 @@ function SessionControllerFactory(webapp, userService, httpSecurity, jwtService,
     userService.create(newUser)
       .then(user => {
         next();
+      })
+      .catch(err => {
+        res.status(406).send({
+          errors: [].concat(err)
+        });
       });
   }
 
   function createSession(req,res){
     console.log('UserAPI - createSession', req.body);
-    if(!req.body.username || !req.body.password){
-      return res.send(400).end();
-    }
+    // if(!req.body.username || !req.body.password){
+    //   return res.status(400).end();
+    // }
     userService.login(req.body.username, req.body.password)
       .then(user => {
         console.log('Login OK', user);
         //create token
         jwtService.createToken(user).then(token => {
           res.status(200).send({
-            success: true,
             type: 'session',
             data: {
               token
@@ -38,7 +42,7 @@ function SessionControllerFactory(webapp, userService, httpSecurity, jwtService,
       })
       .catch(err => {
         console.log('Login failed', err);
-        res.status(404).end();
+        res.status(406).end();
       });
   }
 
@@ -46,7 +50,6 @@ function SessionControllerFactory(webapp, userService, httpSecurity, jwtService,
     //security middleware stores user data in req.user
     res.status(200).send({
       type: 'session',
-      success: true,
       data: req.user
     });
   }

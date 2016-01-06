@@ -46,7 +46,7 @@ function DishControllerFactory(webapp, dishService, httpSecurity){
       .catch(err => {
         res.status(406).send({
           type: 'dish',
-          errors: err
+          errors: [].concat(err)
         })
       });
   }

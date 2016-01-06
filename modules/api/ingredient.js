@@ -64,8 +64,7 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
         console.log('Ingredient API create failed', err);
         res.status(406).send({
           type: 'ingredient',
-          success: false,
-          errors: err
+          errors: [].concat(err)
         });
       });
   }
@@ -76,15 +75,13 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
       .then(ing => {
         res.send({
           type: 'ingredient',
-          success: true,
           data: ing
         })
       })
       .catch(err => {
         res.status(406).send({
           type: 'ingredient',
-          success: false,
-          errors: err
+          errors: [].concat(err)
         });
       })
   }

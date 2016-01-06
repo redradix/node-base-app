@@ -5,6 +5,7 @@
 module.exports = {
   title: 'User',
   type: 'object',
+  additionalProperties: false,
   properties: {
     username: {
       type: 'string',

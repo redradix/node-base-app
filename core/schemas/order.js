@@ -5,6 +5,7 @@
 module.exports = {
   title: 'Order',
   type: 'object',
+  additionalProperties: false,
   properties: {
     id: {
       type: 'string',
@@ -26,6 +27,7 @@ module.exports = {
       minItems: 1,
       items: {
         type: 'object',
+        additionalProperties: false,
         properties: {
           id: {
             type: 'string',

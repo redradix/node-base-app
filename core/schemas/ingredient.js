@@ -5,6 +5,7 @@
 module.exports = {
   title: 'Ingredient',
   type: 'object',
+  additionalProperties: false,
   properties: {
     name: {
       type: 'string',

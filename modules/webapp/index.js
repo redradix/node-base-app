@@ -27,7 +27,7 @@ function WebAppFactory(config){
 
   app.use((err,req,res,next) => {
     console.log('Express error', err);
-    res.send(err.statusCode).end();
+    res.status(err.statusCode).end();
   });
 
   function start(){
