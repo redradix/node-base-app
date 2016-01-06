@@ -8,6 +8,7 @@
     "migrate:dev": "knex --knexfile ./config/knexfile.js migrate:latest",
     "migrate:test": "knex --env test --knexfile ./config/knexfile.js migrate:latest",
     "migrate": "npm run migrate:dev && npm run migrate:test",
+    "seed": "knex --knexfile ./config/knexfile.js seed:run",
     "test": "npm run migrate:test && mocha --recursive",
     "tdd": "npm run migrate:test && mocha --recursive -w"
   },

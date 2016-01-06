@@ -1,5 +1,5 @@
 # Node base app - Restaurant API + user security
-Node.js version >=4 required. 
+Node.js version >=4 required.
 ## Dependencies
 - Local project dependencies (`npm install`)
 - Global dependencies: `mocha` for running tests, `knex` for running migrations
@@ -15,12 +15,15 @@ GRANT ALL PRIVILEGES ON food.* TO 'food'@'localhost' IDENTIFIED BY 'food';
 GRANT ALL PRIVILEGES ON food_test.* TO 'food'@'localhost' IDENTIFIED BY 'food';
 ```
 
-## Migrations
+## Migrations && Seeds
+Build the DB schema by executing migrations.
+Insert seed data
 Available npm scripts:
 
-1. `npm run migrate:dev` - Executes dev migrations on `food` database
-2. `npm run migrate:test` - Executes test migrations on `food_test` database
-3. `npm test` - Runs server tests
+1. `npm run migrate:dev` - Execute dev migrations on `food` database
+2. `npm run migrate:test` - Execute test migrations on `food_test` database
+3. `npm run seed` - Insert seed data in the DB
+3. `npm test` - Run server tests
 4. `npm start` - Start the app
 
 

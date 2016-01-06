@@ -19,8 +19,8 @@ exports.seed = function(knex, Promise) {
   ];
   return Promise.join(
     // Deletes ALL existing entries
-    knex('dish').del(),
     knex('dish_ingredient').del(),
+    knex('dish').del(),
     // Inserts seed entries
     knex('dish').insert(dish),
     knex('dish_ingredient').insert(ingredients)
