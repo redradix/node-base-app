@@ -1,7 +1,10 @@
-
+/**
+ * OrderController
+ */
 function OrderControllerFactory(webapp, orderService, httpSecurity){
 
-  function fetchOrder(req, res, next, orderId){
+  //Express param handler, loads Order into Request object
+  function loadOrder(req, res, next, orderId){
     orderService.getById(orderId)
       .then(order => {
         if(!order){
@@ -16,6 +19,7 @@ function OrderControllerFactory(webapp, orderService, httpSecurity){
       });
   }
 
+  //Returns all Orders
   function getAll(req, res){
     orderService.getAll().then(orders => {
       res.send({
@@ -25,6 +29,7 @@ function OrderControllerFactory(webapp, orderService, httpSecurity){
     })
   }
 
+  // Returns a single Order
   function getById(req, res){
     res.send({
       type: 'orders',
@@ -32,6 +37,7 @@ function OrderControllerFactory(webapp, orderService, httpSecurity){
     });
   }
 
+  // Creates a new Order
   function create(req, res){
     var postedOrder = req.body;
     //use JWT-provided user object
@@ -48,12 +54,12 @@ function OrderControllerFactory(webapp, orderService, httpSecurity){
       .catch(err => {
         res.status(406).send({
           type: 'orders',
-          success: false,
           errors: [].concat(err)
         })
       })
   }
 
+  // Updates an Order
   function update(req, res){
     var updatedOrder = Object.assign({}, req.order, req.body);
     console.log('Order update', updatedOrder);
@@ -67,12 +73,12 @@ function OrderControllerFactory(webapp, orderService, httpSecurity){
       .catch(err => {
         res.status(406).send({
           type: 'orders',
-          success: false,
           errors: [].concat(err)
         })
       })
   }
 
+  // Deletes an Order by id
   function deleteById(req, res){
     orderService.deleteById(req.order.id)
       .then(() => res.status(200).end())
@@ -86,7 +92,7 @@ function OrderControllerFactory(webapp, orderService, httpSecurity){
   router.get('/orders/:orderId', getById);
   router.put('/orders/:orderId', update);
   router.delete('/orders/:orderId', deleteById);
-  router.param('orderId', fetchOrder);
+  router.param('orderId', loadOrder);
 
   return {};
 

@@ -8,7 +8,8 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
   var app = webapp.app,
       router = webapp.apiRouter;
 
-  function getIngredient(req, res, next, ingredientId){
+  // Express.param handler, loads ingredient into request object
+  function loadIngredient(req, res, next, ingredientId){
     if(!ingredientId){
       res.status(404).end();
     }
@@ -23,11 +24,11 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
     }
   }
 
+  // Returns all ingredients
   function getAll(req, res){
     ingredientService.getAll().then(ingredients => {
       res.send({
         type: 'ingredients',
-        success: true,
         data: ingredients
       });
     })
@@ -37,14 +38,15 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
     })
   }
 
+  // Returns a single ingredient
   function getById(req, res){
     res.send({
-      type: 'ingredient',
-      success: true,
+      type: 'ingredients',
       data: req.ingredient
     });
   }
 
+  // Creates a new ingredient, returns the new object
   function create(req, res){
     var postData = {
       name: req.body.name,
@@ -55,37 +57,38 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
     ingredientService.create(postData)
       .then(ing => {
         res.send({
-          type: 'ingredient',
-          success: true,
+          type: 'ingredients',
           data: ing
         })
       })
       .catch(err => {
         console.log('Ingredient API create failed', err);
         res.status(406).send({
-          type: 'ingredient',
+          type: 'ingredients',
           errors: [].concat(err)
         });
       });
   }
 
+  // Updates an existing ingredient
   function update(req, res){
     var postedIngredient = Object.assign({}, req.ingredient, req.body);
     ingredientService.update(req.params.ingredientId, postedIngredient)
       .then(ing => {
         res.send({
-          type: 'ingredient',
+          type: 'ingredients',
           data: ing
         })
       })
       .catch(err => {
         res.status(406).send({
-          type: 'ingredient',
+          type: 'ingredients',
           errors: [].concat(err)
         });
       })
   }
 
+  // Deletes an ingredient
   function deleteById(req, res){
     ingredientService.deleteById(req.ingredient.id)
       .then(() => {
@@ -100,7 +103,7 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
 
   //all routes are secure
   router.all('/ingredients/*', httpSecurity.requireToken);
-  router.param('ingredientId', getIngredient);
+  router.param('ingredientId', loadIngredient);
   router.get('/ingredients', getAll);
   router.get('/ingredients/:ingredientId', getById);
   router.post('/ingredients', create);

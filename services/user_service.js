@@ -3,7 +3,7 @@ var bcrypt = require('bcrypt');
 var _ = require('lodash');
 
 /**
- * Session Controller - handles register, login, logout and session info (me)
+ * User Service - handles user creation and user login
  */
 function UserServiceFactory(db, validator){
 
@@ -69,6 +69,7 @@ function UserServiceFactory(db, validator){
     });
   }
 
+  /* Checks if a given username is available */
   function checkUsername(username){
     return getByUsername(username)
       .then(user => {

@@ -5,7 +5,8 @@ Dish REST API
 */
 function DishControllerFactory(webapp, dishService, httpSecurity){
 
-  function getDishById(req, res, next, dishId){
+  // Express param handler, enhances request with dish object
+  function loadDish(req, res, next, dishId){
     dishService.getById(dishId)
       .then(dish => {
         if(!dish) return res.status(404).end();
@@ -18,6 +19,7 @@ function DishControllerFactory(webapp, dishService, httpSecurity){
       })
   }
 
+  // Returns a single Dish
   function getById(req,res){
     res.send({
       type: 'dish',
@@ -25,6 +27,7 @@ function DishControllerFactory(webapp, dishService, httpSecurity){
     });
   }
 
+  // Returns all dishes
   function getAll(req, res){
     dishService.getAll().then(dishes => {
       res.send({
@@ -34,6 +37,7 @@ function DishControllerFactory(webapp, dishService, httpSecurity){
     })
   }
 
+  // Creates a new Dish
   function create(req, res){
     var postedDish = req.body;
     dishService.create(postedDish)
@@ -51,6 +55,7 @@ function DishControllerFactory(webapp, dishService, httpSecurity){
       });
   }
 
+  // Updates an existing dish
   function update(req, res){
     var updatedDish = Object.assign({}, req.dish, req.body);
     dishService.update(req.dish.id, updatedDish)
@@ -68,6 +73,7 @@ function DishControllerFactory(webapp, dishService, httpSecurity){
       })
   }
 
+  // Deletes a Dish
   function deleteById(req, res){
     dishService.deleteById(req.dish.id)
       .then(() => {
@@ -83,13 +89,14 @@ function DishControllerFactory(webapp, dishService, httpSecurity){
   }
 
   var router = webapp.apiRouter;
-
-  router.get('/dishes', httpSecurity.requireToken, getAll);
-  router.get('/dishes/:dishId', httpSecurity.requireToken, getById);
-  router.post('/dishes', httpSecurity.requireToken, create);
-  router.put('/dishes/:dishId', httpSecurity.requireToken, update);
-  router.delete('/dishes/:dishId', httpSecurity.requireToken, deleteById);
-  router.param('dishId', getDishById);
+  //Route handlers
+  router.all('/dishes/*', httpSecurity.requireToken);
+  router.get('/dishes', getAll);
+  router.get('/dishes/:dishId', getById);
+  router.post('/dishes', create);
+  router.put('/dishes/:dishId', update);
+  router.delete('/dishes/:dishId', deleteById);
+  router.param('dishId', loadDish);
 
   return {};
 
