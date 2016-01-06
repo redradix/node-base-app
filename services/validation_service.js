@@ -18,9 +18,27 @@ function ValidatorServiceFactory(schemas){
     return validator.validate(obj, schema);
   }
 
+  /* Promise version for using in Promise chains
+     If valid, Promise resolves with the object itself
+     Otherwise, Promise rejects with the validation errors Array
+  */
+  function validateAsync(schemaName, obj){
+    return new Promise((resolve, reject) => {
+      var results = validate(schemaName, obj);
+      return results.valid ? resolve(obj) : reject(_formatErrors(results.errors));
+    });
+  }
+
+  function _formatErrors(errors){
+    return errors.map(e => {
+      return Object.assign({}, e, { code: 'VALIDATION_ERROR '});
+    });
+  }
+
 
   return {
-    validate
+    validate,
+    validateAsync
   }
 }
 

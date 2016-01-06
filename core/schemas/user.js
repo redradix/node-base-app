@@ -7,6 +7,11 @@ module.exports = {
   type: 'object',
   additionalProperties: false,
   properties: {
+    id: {
+      type: 'string',
+      minLength: 36,
+      maxLength: 36
+    },
     username: {
       type: 'string',
       maxLength: 50,

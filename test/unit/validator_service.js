@@ -45,7 +45,7 @@ describe('Validator service', () => {
     var results = subject.validate('User', user);
     results.should.be.an.Object;
     results.valid.should.be.false;
-    results.errors.should.have.length(2);
+    results.errors.should.have.length(3);
     results.errors[0].should.have.property('property', 'username');
     results.errors[0].should.have.property('attribute', 'required');
 

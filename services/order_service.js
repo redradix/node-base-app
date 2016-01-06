@@ -91,8 +91,7 @@ function OrderServiceFactory(db, validator){
 
   /* Validates an Order using JSON Schema */
   function _validateOrder(order){
-    var res = validator.validate('Order', order);
-    return res.valid ? Promise.resolve(order) : Promise.reject(res.errors);
+    return validator.validateAsync('Order', order);
   }
 
   return {

@@ -1,23 +1,29 @@
 /**
   Returns the Session API Controller
 */
+var isError = require('util').isError;
+
 function SessionControllerFactory(webapp, userService, httpSecurity, jwtService, config){
   var app = webapp.app,
       router = webapp.apiRouter;
 
+
+  //Formats an Exception or returns other type of errors (promise rejections)
+  function _formatError(err, code){
+    return isError(err) ? { message: err.message, code: code } : err;
+  }
+
   function register(req, res, next){
-    var newUser = {
-      username: req.body.username,
-      password: req.body.password
-    }
-    console.log('UserAPI - register', req.body);
-    userService.create(newUser)
+    userService.create(req.body)
       .then(user => {
         next();
       })
       .catch(err => {
+        console.log('Register failed', err );
+        //turn Error into Object with message
+        var apiErrors = _formatError(err, 'REGISTER_FAILED');
         res.status(406).send({
-          errors: [].concat(err)
+          errors: [].concat(apiErrors)
         });
       });
   }
@@ -42,7 +48,9 @@ function SessionControllerFactory(webapp, userService, httpSecurity, jwtService,
       })
       .catch(err => {
         console.log('Login failed', err);
-        res.status(406).end();
+        res.status(406).send({
+          errors: [].concat(_formatError(err, 'LOGIN_FAILED'))
+        });
       });
   }
 

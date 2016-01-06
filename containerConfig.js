@@ -1,5 +1,6 @@
 var container = require('kontainer-di');
 
+//configuration
 container.register('dbConfig', [], require('./config/knexfile'));
 container.register('webConfig', [], require('./config/http'));
 
@@ -17,7 +18,7 @@ container.register('schemas', [], require('./core/schemas'));
 //Validation Service
 container.register('validationService', ['schemas'], require('./services/validation_service'));
 
-//Data acces services
+//Data access services
 container.register('userService', ['db', 'validationService'], require('./services/user_service'));
 container.register('ingredientService', ['db', 'validationService'], require('./services/ingredient_service'));
 container.register('dishService', ['db', 'validationService'], require('./services/dish_service'));

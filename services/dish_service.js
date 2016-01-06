@@ -79,8 +79,7 @@ function DishServiceFactory(db, validator){
 
   /** Validates a Dish using JSON Schema **/
   function _validateDish(dish){
-    var res = validator.validate('Dish', dish);
-    return res.valid ? Promise.resolve(dish) : Promise.reject(res.errors);
+    return validator.validateAsync('Dish', dish);
   }
 
 

@@ -45,8 +45,7 @@ function IngredientServiceFactory(db, validator){
 
   /* Validates an ingredient using JSON Schema */
   function _validateIngredient(ing){
-    var res = validator.validate('Ingredient', ing);
-    return res.valid ? Promise.resolve(ing) : Promise.reject(res.errors);
+    return validator.validateAsync('Ingredient', ing);
   }
 
   return {

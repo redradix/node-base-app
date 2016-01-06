@@ -41,7 +41,7 @@ describe('Ingredient Service', () => {
       ingredient.should.have.property('name', fakeCheese.name);
       done();
     })
-    .catch(done)
+    .catch(done);
   });
 
   it('Should avoid creating a non-valid ingredient', done => {

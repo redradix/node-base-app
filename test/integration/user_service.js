@@ -30,6 +30,14 @@ describe('User Service', () => {
     .catch(done);
   });
 
+  it('Should check if the username is already in use', done => {
+    subject.create(fakeUser)
+    .catch(err => {
+      err.message.should.match(/already in use/);
+      done();
+    });
+  });
+
   it('Should get a User by id', done => {
     subject.getUserById(fakeUserId).then(user => {
       user.id.should.equal(fakeUserId);

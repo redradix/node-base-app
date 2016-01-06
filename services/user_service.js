@@ -42,7 +42,8 @@ function UserServiceFactory(db, validator){
   /* Creates a new user, encrypting its password */
   function create(user){
     var newUser = Object.assign({ id: uuid.v4() }, user);
-    return _validateUser(newUser)
+    return checkUsername(newUser.username)
+      .then(() => _validateUser(newUser))
       .then(user => encryptPassword(user.password))
       .then(hash => {
         newUser.password = hash;
@@ -54,27 +55,39 @@ function UserServiceFactory(db, validator){
 
   /* Checks user/password combination and returns the matching user */
   function login(username, password){
-    return getByUsername(username).then(u => {
-      if(!u) throw new Error('Wrong username');
-      return checkPassword(password, u.password).then(isEqual => {
-        if(!isEqual){
-          throw new Error('Wrong password');
-        }
-        return u;
-      });
+    var user = { username, password };
+    return _validateUser(user)
+      .then(() => getByUsername(username))
+      .then(u => {
+        if(!u) throw new Error('User not found');
+        return checkPassword(password, u.password).then(isEqual => {
+          if(!isEqual){
+            throw new Error('Wrong password');
+          }
+          return u;
+        });
     });
+  }
+
+  function checkUsername(username){
+    return getByUsername(username)
+      .then(user => {
+        if(user)
+          throw new Error('Username already in use');
+        return true;
+      })
   }
 
   /* Validates a User (for registering) using JSON Schema */
   function _validateUser(user){
-    var res = validator.validate('User', user);
-    return res.valid ? Promise.resolve(user) : Promise.reject(res.errors);
+    return validator.validateAsync('User', user);
   }
 
   return {
     getUserById,
     login,
-    create
+    create,
+    checkUsername
   }
 
 }
