@@ -5,8 +5,8 @@
 module.exports = {
   title: 'Dish',
   type: 'object',
-  required: ['name', 'price', 'ingredients'],
-  //makes validation fail in any other property is present in this object
+  //makes validation fail if any other property is present in this object
+  //this avoids SQL errors of WRONG_COLUMN and such
   additionalProperties: false,
   properties: {
     id: {
@@ -27,17 +27,22 @@ module.exports = {
       type: 'array',
       required: true,
       minItems: 1,
+      required: ['id', 'amount'],
       items: {
         type: 'object',
+        additionalProperties: false,
         properties: {
           id: {
             type: 'string',
             maxLength: 36,
-            required: true
+            minLength: 36
           },
           amount: {
             type: 'number',
             required: true
+          },
+          name: {
+            type: 'string'
           }
         }
       }

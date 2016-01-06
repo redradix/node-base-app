@@ -32,7 +32,7 @@ describe('Validator service', () => {
 
     var results = subject.validate('User', user);
     results.should.be.an.Object;
-    results.valid.should.be.true;
+    results.valid.should.equal(true);
     results.errors.should.have.length(0);
   });
 
@@ -44,7 +44,7 @@ describe('Validator service', () => {
 
     var results = subject.validate('User', user);
     results.should.be.an.Object;
-    results.valid.should.be.false;
+    results.valid.should.equal(false);
     results.errors.should.have.length(3);
     results.errors[0].should.have.property('property', 'username');
     results.errors[0].should.have.property('attribute', 'required');
@@ -60,7 +60,7 @@ describe('Validator service', () => {
 
     var results = subject.validate('Ingredient', ing);
     results.should.be.an.Object;
-    results.valid.should.be.true;
+    results.valid.should.equal(true);
     results.errors.should.have.length(0);
   });
 
@@ -73,7 +73,7 @@ describe('Validator service', () => {
 
     var results = subject.validate('Ingredient', ing);
     results.should.be.an.Object;
-    results.valid.should.be.false;
+    results.valid.should.equal(false);
     var errors = results.errors;
 
     errors.should.have.length(2);
@@ -94,15 +94,15 @@ describe('Validator service', () => {
       price: 14.90,
       ingredients: [
         {
-          id: 'pasta',
+          id: uuid.v4(),
           amount: 150
         },
         {
-          id: 'tomato',
+          id: uuid.v4(),
           amount: 30
         },
         {
-          id: 'cheese',
+          id: uuid.v4(),
           amount: 15
         }
       ]
@@ -110,7 +110,8 @@ describe('Validator service', () => {
 
     var results = subject.validate('Dish', dish);
     results.should.be.an.Object;
-    results.valid.should.be.true;
+    console.log(results.errors);
+    results.valid.should.equal(true);
   });
 
   it('Should reject an invalid Dish (invalid ingredient)', () => {
@@ -133,8 +134,8 @@ describe('Validator service', () => {
     };
     var results = subject.validate('Dish', wrongDish);
     results.should.be.an.Object;
-    results.valid.should.be.false;
-    results.errors.should.have.length(3);
+    results.valid.should.equal(false);
+    results.errors.length.should.be.above(3);
   });
 
   it('Should accept a valid Order', () => {
@@ -156,8 +157,7 @@ describe('Validator service', () => {
     };
 
     var results = subject.validate('Order', order);
-    console.log(results);
-    results.valid.should.be.false;
+    results.valid.should.equal(true);
     results.errors.should.have.length(0);
   });
 
@@ -168,7 +168,7 @@ describe('Validator service', () => {
       dishes: []
     }
     var results = subject.validate('Order', wrongOrder);
-    results.valid.should.be.false;
+    results.valid.should.equal(false);
     results.errors.should.have.length(3);
   });
 });

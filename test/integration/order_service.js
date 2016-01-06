@@ -72,6 +72,7 @@ describe('Order Service', () => {
       createdBy: 'foo'
     }
     subject.create(newOrder)
+      .then(done)
       .catch(err => {
         err.should.be.an.Array;
         err.should.have.length(3);
@@ -134,7 +135,6 @@ describe('Order Service', () => {
 
   it('Should return all orders', done => {
     subject.getAll().then(orders => {
-      console.log(orders);
       orders.should.be.an.Array;
       orders.length.should.equal(1);
       done();

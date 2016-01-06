@@ -14,35 +14,34 @@ module.exports = {
     },
     createdAt: {
       type: 'integer',
-      required: true
+      required: true,
     },
     createdBy: {
       type: 'string',
       minLength: 36,
-      maxLength: 36
+      maxLength: 36,
+      required: true
     },
     dishes: {
       type: 'array',
-      required: true,
       minItems: 1,
+      required: true,
       items: {
         type: 'object',
+        required: ['id', 'amount'],
         additionalProperties: false,
         properties: {
           id: {
             type: 'string',
-            minLength: 32,
-            maxLength: 36,
-            required: true
+            minLength: 36,
+            maxLength: 36
           },
           name: {
             type: 'string',
-            maxLength: 150,
-            required: false
+            maxLength: 150
           },
           amount: {
-            type: 'integer',
-            required: true
+            type: 'integer'
           }
         }
       }
