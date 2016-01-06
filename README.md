@@ -16,8 +16,9 @@ GRANT ALL PRIVILEGES ON food_test.* TO 'food'@'localhost' IDENTIFIED BY 'food';
 ```
 
 ## Migrations && Seeds
-Build the DB schema by executing migrations.
-Insert seed data
+Build the DB schema by executing knex migrations.
+You can optionally execute knex seeds as well.
+
 Available npm scripts:
 
 1. `npm run migrate:dev` - Execute dev migrations on `food` database
