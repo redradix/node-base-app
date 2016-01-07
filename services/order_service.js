@@ -60,7 +60,7 @@ function OrderServiceFactory(db, validator){
   /* Updates an Order, replacing all its related dishes */
   function update(id, order){
     return _validateOrder(order)
-      .then(order => db('order').where({ id }).update(_.omit(order, ['dishes', 'createdAt'])))
+      .then(order => db('order').where({ id }).update(_.omit(order, ['dishes', 'createdAt', 'id'])))
       .then((affectedRows) => _clearOrderDishes(id))
       .then((affectedRows) => _saveOrderDishes(id, order.dishes))
       .then(() => order);

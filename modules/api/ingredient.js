@@ -62,10 +62,18 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
         })
       })
       .catch(err => {
-        console.log('Ingredient API create failed', err);
+        var apiError = err;
+        console.log('Ingredient API create failed', err.code);
+        if(err.code === 'ER_DUP_ENTRY') {
+          apiError = {
+            code: 'INVALID_INGREDIENT',
+            message: 'Ingredient name must be unique'
+          }
+          //err.message = 'Ingredient name exists'
+        };
         res.status(406).send({
           type: 'ingredients',
-          errors: [].concat(err)
+          errors: [].concat(apiError)
         });
       });
   }
@@ -81,6 +89,9 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
         })
       })
       .catch(err => {
+        if(err.code === 'ER_DUP_ENTRY') {
+          err.message = 'Ingredient name exists'
+        };
         res.status(406).send({
           type: 'ingredients',
           errors: [].concat(err)

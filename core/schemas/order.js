@@ -28,20 +28,21 @@ module.exports = {
       required: true,
       items: {
         type: 'object',
-        required: ['id', 'amount'],
         additionalProperties: false,
         properties: {
           id: {
             type: 'string',
             minLength: 36,
-            maxLength: 36
+            maxLength: 36,
+            required: true
           },
           name: {
             type: 'string',
             maxLength: 150
           },
           amount: {
-            type: 'integer'
+            type: 'integer',
+            required: true
           }
         }
       }

@@ -10,20 +10,20 @@ exports.up = function(knex, Promise) {
     //User
     knex.schema.createTable('user', t => {
       t.uuid('id').notNullable().primary().unique();
-      t.string('username',50).notNullable().unique();
-      t.string('password',50).notNullable();
+      t.string('username',60).notNullable().unique();
+      t.string('password',60).notNullable();
     }),
     //Ingredient
     knex.schema.createTable('ingredient', t => {
       t.uuid('id').notNullable().primary().unique();
-      t.string('name', 50).notNullable();
+      t.string('name', 50).notNullable().unique();
       t.decimal('cost').notNullable();
       t.integer('stock').notNullable();
     }),
     //Dish
     knex.schema.createTable('dish', t => {
       t.uuid('id').notNullable().primary().unique();
-      t.string('name', 150).notNullable();
+      t.string('name', 150).notNullable().unique();
       t.decimal('price').notNullable();
     }),
     //Dish_Ingredient
@@ -31,6 +31,7 @@ exports.up = function(knex, Promise) {
       t.uuid('dishId').notNullable().references('id').inTable('dish');
       t.uuid('ingredientId').notNullable().references('id').inTable('ingredient');
       t.decimal('amount').notNullable().defaultTo(1);
+      //t.primary(['dishId', 'ingredientId']);
     }),
     //Order
     knex.schema.createTable('order', t => {
@@ -42,6 +43,8 @@ exports.up = function(knex, Promise) {
     knex.schema.createTable('order_dish', t => {
       t.uuid('orderId').references('id').inTable('order');
       t.uuid('dishId').references('id').inTable('dish');
+      t.integer('amount').notNullable();
+      //t.primary(['orderId', 'dishId']);
     })
   ]);
 };

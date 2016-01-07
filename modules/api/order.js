@@ -1,3 +1,4 @@
+var _ = require('lodash');
 /**
  * OrderController
  */
@@ -61,7 +62,7 @@ function OrderControllerFactory(webapp, orderService, httpSecurity){
 
   // Updates an Order
   function update(req, res){
-    var updatedOrder = Object.assign({}, req.order, req.body);
+    var updatedOrder = Object.assign({}, req.order, _.omit(req.body, ['id', 'createdBy', 'createdAt']));
     console.log('Order update', updatedOrder);
     orderService.update(req.order.id, updatedOrder)
       .then(order => {
