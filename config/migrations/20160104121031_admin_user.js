@@ -5,11 +5,17 @@
 
 exports.up = function(knex, Promise) {
   var UserServiceFactory = require('../../services/user_service');
+  var fakeValidator = {
+    validateAsync: function(schema, user){
+      console.log('Validating', user);
+      return Promise.resolve(user);
+    }
+  }
   var defaultUser = {
     username: 'admin',
     password: 'admin'
   }
-  var userService = UserServiceFactory(knex);
+  var userService = UserServiceFactory(knex, fakeValidator);
   return userService.create(defaultUser);
 };
 
