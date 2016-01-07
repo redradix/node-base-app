@@ -1,5 +1,5 @@
 # Node base app - Restaurant API + user security
-Node.js version >=4 required.
+Node.js version >=4 required. If you have `nvm` installed use `nvm use` to select node.js version from `.nvmrc` file.
 ## Dependencies
 - Local project dependencies (`npm install`)
 - Global dependencies: `mocha` for running tests, `knex` for running migrations
@@ -14,18 +14,25 @@ CREATE DATABASE food_test;
 GRANT ALL PRIVILEGES ON food.* TO 'food'@'localhost' IDENTIFIED BY 'food';
 GRANT ALL PRIVILEGES ON food_test.* TO 'food'@'localhost' IDENTIFIED BY 'food';
 ```
+And then create the schema:
+```npm run migrate```
 
-## Migrations && Seeds
-Build the DB schema by executing knex migrations.
-You can optionally execute knex seeds as well.
+And insert seed data:
+```npm run seed```
 
+## Starting the App
+Start the server:
+```npm start```
+
+## More stuff
 Available npm scripts:
 
 1. `npm run migrate:dev` - Execute dev migrations on `food` database
 2. `npm run migrate:test` - Execute test migrations on `food_test` database
-3. `npm run seed` - Insert seed data in the DB
-3. `npm test` - Run server tests
-4. `npm start` - Start the app
+3. `npm run migrate` - Execute both dev and test migrations
+4. `npm run seed` - Insert seed data in the DB
+5. `npm test` - Run server tests
+6. `npm start` - Applies migrations and starts the API server
 
 
 One of the migrations creates an application user `admin` with password `admin` in the database.
