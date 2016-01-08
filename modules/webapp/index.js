@@ -17,6 +17,7 @@ function WebAppFactory(config){
   app.all(config.apiPrefix + '/*', bodyParser.json());
 
   //Enable cross domain
+  app.options('*', cors()); // include before other routes
   app.use(cors());
 
   //inject REST API router
