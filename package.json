@@ -17,6 +17,7 @@
   "dependencies": {
     "bcrypt": "^0.8.5",
     "body-parser": "^1.14.2",
+    "cors": "^2.7.1",
     "express": "^4.13.3",
     "jsonwebtoken": "^5.5.0",
     "knex": "^0.9.0",

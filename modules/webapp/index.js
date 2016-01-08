@@ -1,6 +1,7 @@
 //Webapp module factory
 var express = require('express');
 var bodyParser = require('body-parser');
+var cors = require('cors');
 
 function WebAppFactory(config){
 
@@ -16,11 +17,7 @@ function WebAppFactory(config){
   app.all(config.apiPrefix + '/*', bodyParser.json());
 
   //Enable cross domain
-  app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
-    next();
-  });
+  app.use(cors());
 
   //inject REST API router
   app.use(config.apiPrefix, apiRouter);
