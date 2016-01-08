@@ -87,7 +87,7 @@ function OrderControllerFactory(webapp, orderService, httpSecurity){
   }
 
   var router = webapp.apiRouter;
-  router.all('/orders*', httpSecurity.requireToken);
+  router.all('/orders/*', httpSecurity.requireToken);
   router.get('/orders', getAll);
   router.post('/orders', create);
   router.get('/orders/:orderId', getById);
