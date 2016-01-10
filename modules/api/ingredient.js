@@ -107,7 +107,15 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
       })
       .catch(err => {
         console.log('Error DELETE ingredient', err);
-        res.status(500).end();
+        if(err.code.indexOf('ROW_IS_REFEREBCED') !== 0){
+          res.status(400).send({
+            errors: [].concat({ code: 'INGREDIENT_IN_USE', message: 'Ingredient is part of one or more dishes'})
+          });
+        }
+        else
+          res.status(400).send({
+            errors: [].concat(err)
+          })
       })
   }
 
