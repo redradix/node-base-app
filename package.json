@@ -4,7 +4,10 @@
   "description": "Node.js base app for RedRadix",
   "main": "index.js",
   "scripts": {
-    "start": "npm run migrate:dev && node index.js",
+    "start": "npm run migrate:dev && npm run watch && npm run logs",
+    "watch": "npm run migrate:dev && ./node_modules/.bin/pm2 start index.js --watch -f",
+    "logs": "./node_modules/.bin/pm2 logs",
+    "stop": "./node_modules/.bin/pm2 delete all",
     "migrate:dev": "knex --knexfile ./config/knexfile.js migrate:latest",
     "migrate:test": "knex --env test --knexfile ./config/knexfile.js migrate:latest",
     "migrate": "npm run migrate:dev && npm run migrate:test",
@@ -25,6 +28,7 @@
     "lodash": "^3.10.1",
     "mysql": "^2.10.0",
     "passport": "^0.3.2",
+    "pm2": "^1.0.0",
     "revalidator": "^0.3.1",
     "uuid": "^2.0.1"
   },
