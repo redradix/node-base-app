@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "description": "Node.js base app for RedRadix",
   "main": "index.js",
+  "engines" : {
+    "node" : ">=4.2.4",
+    "npm" : ">=2.14"
+  },
   "scripts": {
     "start": "npm run migrate:dev && npm run watch && npm run logs",
     "watch": "npm run migrate:dev && ./node_modules/.bin/pm2 start index.js --watch -f",
@@ -27,7 +31,6 @@
     "kontainer-di": "^0.9.8",
     "lodash": "^3.10.1",
     "mysql": "^2.10.0",
-    "passport": "^0.3.2",
     "pm2": "^1.0.0",
     "revalidator": "^0.3.1",
     "uuid": "^2.0.1"
