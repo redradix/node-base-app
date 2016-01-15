@@ -32,7 +32,10 @@ Available npm scripts:
 3. `npm run migrate` - Execute both dev and test migrations
 4. `npm run seed` - Insert seed data in the DB
 5. `npm test` - Run server tests
-6. `npm start` - Applies migrations and starts the API server
+6. `npm start` - Applies migrations and starts the API server daemon and logs
+7. `npm run watch` - Applies migrations and starts the API server daemon
+8. `npm run logs` - Shows server process' logs
+8. `npm run stop` - Kills server process
 
 
 One of the migrations creates an application user `admin` with password `admin` in the database.
