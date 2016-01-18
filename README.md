@@ -24,6 +24,8 @@ And insert seed data:
 Start the server:
 ```npm start```
 
+Since the `npm start` runs the pm2 daemon, make sure you kill it with `npm run stop` before starting the server again. Otherwise an 'EADDRINUSE' error will happen. `^C` while running `npm start` does kill the watching and logs tasks, it doesn't kill the server process though.
+
 ## More stuff
 Available npm scripts:
 
