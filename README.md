@@ -24,6 +24,8 @@ And insert seed data:
 Start the server:
 ```npm start```
 
+Since the `npm start` runs the pm2 daemon, make sure you kill it with `npm run stop` before starting the server again. Otherwise an 'EADDRINUSE' error will happen. `^C` while running `npm start` does kill the watching and logs tasks, it doesn't kill the server process though.
+
 ## More stuff
 Available npm scripts:
 
@@ -32,7 +34,10 @@ Available npm scripts:
 3. `npm run migrate` - Execute both dev and test migrations
 4. `npm run seed` - Insert seed data in the DB
 5. `npm test` - Run server tests
-6. `npm start` - Applies migrations and starts the API server
+6. `npm start` - Applies migrations and starts the API server daemon and logs
+7. `npm run watch` - Applies migrations and starts the API server daemon
+8. `npm run logs` - Shows server process' logs
+8. `npm run stop` - Kills server process
 
 
 One of the migrations creates an application user `admin` with password `admin` in the database.
