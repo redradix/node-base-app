@@ -48,7 +48,7 @@ function DishControllerFactory(webapp, dishService, httpSecurity){
         })
       })
       .catch(err => {
-        res.status(406).send({
+        res.status(400).send({
           type: 'dish',
           errors: [].concat(err)
         })
@@ -66,7 +66,7 @@ function DishControllerFactory(webapp, dishService, httpSecurity){
         })
       })
       .catch(err => {
-        res.status(406).send({
+        res.status(400).send({
           type: 'dish',
           errors: [].concat(err)
         })
@@ -81,7 +81,7 @@ function DishControllerFactory(webapp, dishService, httpSecurity){
       })
       .catch(err => {
         console.log('Error deleting dish', err);
-        res.status(406).send({
+        res.status(400).send({
           type: 'dish',
           errors: [].concat(err)
         })

@@ -22,7 +22,7 @@ function SessionControllerFactory(webapp, userService, httpSecurity, jwtService,
       .catch(err => {
         console.log('Register failed', err );
         var apiErrors = _formatError(err, 'REGISTER_FAILED');
-        res.status(406).send({
+        res.status(400).send({
           errors: [].concat(apiErrors)
         });
       });
@@ -44,7 +44,7 @@ function SessionControllerFactory(webapp, userService, httpSecurity, jwtService,
       })
       .catch(err => {
         console.log('Login failed', err);
-        res.status(406).send({
+        res.status(400).send({
           errors: [].concat(_formatError(err, 'LOGIN_FAILED'))
         });
       });

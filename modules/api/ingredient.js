@@ -48,13 +48,7 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
 
   // Creates a new ingredient, returns the new object
   function create(req, res){
-    var postData = {
-      name: req.body.name,
-      cost: req.body.cost,
-      stock: req.body.stock
-    }
-
-    ingredientService.create(postData)
+    ingredientService.create(req.body)
       .then(ing => {
         res.send({
           type: 'ingredients',
@@ -71,7 +65,7 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
           }
           //err.message = 'Ingredient name exists'
         };
-        res.status(406).send({
+        res.status(400).send({
           type: 'ingredients',
           errors: [].concat(apiError)
         });
@@ -92,7 +86,7 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
         if(err.code === 'ER_DUP_ENTRY') {
           err.message = 'Ingredient name exists'
         };
-        res.status(406).send({
+        res.status(400).send({
           type: 'ingredients',
           errors: [].concat(err)
         });

@@ -53,7 +53,7 @@ function OrderControllerFactory(webapp, orderService, httpSecurity){
         })
       })
       .catch(err => {
-        res.status(406).send({
+        res.status(400).send({
           type: 'orders',
           errors: [].concat(err)
         })
@@ -72,7 +72,7 @@ function OrderControllerFactory(webapp, orderService, httpSecurity){
         })
       })
       .catch(err => {
-        res.status(406).send({
+        res.status(400).send({
           type: 'orders',
           errors: [].concat(err)
         })
