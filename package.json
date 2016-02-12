@@ -4,14 +4,14 @@
   "description": "Node.js base app for RedRadix",
   "main": "index.js",
   "engines" : {
-    "node" : ">=4.2.4",
+    "node" : ">=4.3.0",
     "npm" : ">=2.14"
   },
   "scripts": {
     "start": "npm run migrate:dev && npm run watch && npm run logs",
-    "watch": "npm run migrate:dev && ./node_modules/.bin/pm2 start index.js --watch -f",
+    "watch": "npm run migrate:dev && ./node_modules/.bin/pm2 start index.js --watch -f --name nodebaseapp",
     "logs": "./node_modules/.bin/pm2 logs",
-    "stop": "./node_modules/.bin/pm2 delete all",
+    "stop": "./node_modules/.bin/pm2 delete nodebaseapp",
     "migrate:dev": "knex --knexfile ./config/knexfile.js migrate:latest",
     "migrate:test": "knex --env test --knexfile ./config/knexfile.js migrate:latest",
     "migrate": "npm run migrate:dev && npm run migrate:test",
