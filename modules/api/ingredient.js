@@ -61,7 +61,8 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
         if(err.code === 'ER_DUP_ENTRY') {
           apiError = {
             code: 'INVALID_INGREDIENT',
-            message: 'Ingredient name must be unique'
+            property: 'name',
+            message: 'already exists'
           }
           //err.message = 'Ingredient name exists'
         };

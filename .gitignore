@@ -2,3 +2,4 @@ node_modules
 npm-debug.log
 .sqlite3
 *.sqlite3
+.DS_Store
