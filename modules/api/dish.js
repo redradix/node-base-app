@@ -77,7 +77,7 @@ function DishControllerFactory(webapp, dishService, httpSecurity){
   function deleteById(req, res){
     dishService.deleteById(req.dish.id)
       .then(() => {
-        res.send(200)
+        res.status(200)
       })
       .catch(err => {
         console.log('Error deleting dish', err);
@@ -90,7 +90,7 @@ function DishControllerFactory(webapp, dishService, httpSecurity){
 
   var router = webapp.apiRouter;
   //Route handlers
-  router.all('/dishes/*', httpSecurity.requireToken);
+  router.all('/dishes*', httpSecurity.requireToken);
   router.get('/dishes', getAll);
   router.get('/dishes/:dishId', getById);
   router.post('/dishes', create);

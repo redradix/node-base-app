@@ -24,7 +24,7 @@ function DishServiceFactory(db, validator){
         res = dish;
         return db('dish_ingredient')
           .join('ingredient', 'ingredientId', 'id')
-          .select('id', 'name', 'amount')
+          .select('id', 'name', 'amount', 'cost')
           .where('dishId', id);
       })
       .then(ingredients => {

@@ -116,7 +116,7 @@ function IngredientControllerFactory(webapp, ingredientService, httpSecurity){
 
 
   //all routes are secure
-  router.all('/ingredients/*', httpSecurity.requireToken);
+  router.all('/ingredients*', httpSecurity.requireToken);
   router.param('ingredientId', loadIngredient);
   router.get('/ingredients', getAll);
   router.get('/ingredients/:ingredientId', getById);

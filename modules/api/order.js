@@ -53,6 +53,7 @@ function OrderControllerFactory(webapp, orderService, httpSecurity){
         })
       })
       .catch(err => {
+        console.log('Error creating Order', err)
         res.status(400).send({
           type: 'orders',
           errors: [].concat(err)
@@ -63,7 +64,6 @@ function OrderControllerFactory(webapp, orderService, httpSecurity){
   // Updates an Order
   function update(req, res){
     var updatedOrder = Object.assign({}, req.order, _.omit(req.body, ['id', 'createdBy', 'createdAt']));
-    console.log('Order update', updatedOrder);
     orderService.update(req.order.id, updatedOrder)
       .then(order => {
         res.send({
@@ -87,7 +87,7 @@ function OrderControllerFactory(webapp, orderService, httpSecurity){
   }
 
   var router = webapp.apiRouter;
-  router.all('/orders/*', httpSecurity.requireToken);
+  router.all('/orders*', httpSecurity.requireToken);
   router.get('/orders', getAll);
   router.post('/orders', create);
   router.get('/orders/:orderId', getById);
