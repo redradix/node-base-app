@@ -8,16 +8,18 @@
     "npm" : ">=2.14"
   },
   "scripts": {
-    "start": "npm run migrate:dev && npm run watch && npm run logs",
-    "watch": "npm run migrate:dev && ./node_modules/.bin/pm2 start index.js --watch -f --name nodebaseapp",
-    "logs": "./node_modules/.bin/pm2 logs",
-    "stop": "./node_modules/.bin/pm2 delete nodebaseapp",
-    "migrate:dev": "knex --knexfile ./config/knexfile.js migrate:latest",
-    "migrate:test": "knex --env test --knexfile ./config/knexfile.js migrate:latest",
-    "migrate": "npm run migrate:dev && npm run migrate:test",
-    "seed": "knex --knexfile ./config/knexfile.js seed:run",
-    "test": "npm run migrate:test && mocha --recursive",
-    "tdd": "npm run migrate:test && mocha --recursive -w"
+    "postinstall": "npm run migrate:all",
+    "start": "pm2 start index.js --name $npm_package_name --watch; pm2 logs $npm_package_name",
+    "stop": "pm2 delete $npm_package_name",
+    "test": "mocha --recursive",
+    "tdd": "npm run test -- -w",
+    "knex": "knex --knexfile ./config/knexfile.js",
+    "migrate": "npm run knex -- migrate:latest",
+    "migrate:test": "npm run migrate -- --env test",
+    "migrate:all": "npm run migrate && npm run migrate:test",
+    "seed": "npm run knex -- seed:run",
+    "seed:test": "npm run seed -- --env test",
+    "seed:all": "npm run seed && npm run seed:test"
   },
   "author": "Carlos de la Orden",
   "license": "ISC",
