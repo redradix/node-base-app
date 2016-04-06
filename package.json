@@ -1,5 +1,5 @@
 {
-  "name": "nodebaseapp",
+  "name": "node-base-app",
   "version": "0.1.0",
   "description": "Node.js base app for RedRadix",
   "main": "index.js",
