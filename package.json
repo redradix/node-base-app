@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "description": "Node.js base app for RedRadix",
   "main": "index.js",
-  "engines" : {
-    "node" : ">=4.3.0",
-    "npm" : ">=2.14"
+  "engines": {
+    "node": ">=4.3.0",
+    "npm": ">=2.14"
   },
   "repository": "redradix/node-base-app",
   "scripts": {
