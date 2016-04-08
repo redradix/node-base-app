@@ -14,30 +14,35 @@ CREATE DATABASE food_test;
 GRANT ALL PRIVILEGES ON food.* TO 'food'@'localhost' IDENTIFIED BY 'food';
 GRANT ALL PRIVILEGES ON food_test.* TO 'food'@'localhost' IDENTIFIED BY 'food';
 ```
-And then create the schema:
-```npm run migrate```
+And then create the schema (in both, dev and test databases):
+`npm run migrate:all`
 
 And insert seed data:
-```npm run seed```
+`npm run seed:all`
 
 ## Starting the App
 Start the server:
-```npm start```
+`npm start`
 
-Since the `npm start` runs the pm2 daemon, make sure you kill it with `npm run stop` before starting the server again. Otherwise an 'EADDRINUSE' error will happen. `^C` while running `npm start` does kill the watching and logs tasks, it doesn't kill the server process though.
+Since `npm start` runs the pm2 daemon, make sure you kill it with `npm stop` once you are done. <kdb>Ctrl-C</kbd> after `npm start` does kill the logs tasks, but it does not stop the server process though.
 
 ## More stuff
 Available npm scripts:
+1. `start` - Starts the API server daemon and logs
+1. `stop` - Kills server process
+1. `test` -  Run server tests
+1. `tdd` - "npm run test -- -w",
+1. `knex` - "knex --knexfile ./config/knexfile.js",
+1. `migrate` - Execute dev migrations on `food` database
+1. `migrate:test` - Execute test migrations on `food_test` database
+1. `migrate:all` - Execute both dev and test migrations
+1. `seed` - Insert seed data on `food` database
+1. `seed:test` - Insert seed data on `food_test` database
+1. `seed:all` - Insert seed data on both dev and test databases
 
-1. `npm run migrate:dev` - Execute dev migrations on `food` database
-2. `npm run migrate:test` - Execute test migrations on `food_test` database
-3. `npm run migrate` - Execute both dev and test migrations
-4. `npm run seed` - Insert seed data in the DB
-5. `npm test` - Run server tests
-6. `npm start` - Applies migrations and starts the API server daemon and logs
-7. `npm run watch` - Applies migrations and starts the API server daemon
-8. `npm run logs` - Shows server process' logs
-8. `npm run stop` - Kills server process
+In addition, the following lifecycle scripts have been added for convenience:
+1. `postinstall` - Runs `migrate:all` to execute all new migrations after an update
+
 
 
 One of the migrations creates an application user `admin` with password `admin` in the database.
