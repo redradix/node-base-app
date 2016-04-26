@@ -28,6 +28,7 @@ Since `npm start` runs the pm2 daemon, make sure you kill it with `npm stop` onc
 
 ## More stuff
 Available npm scripts:
+
 1. `start` - Starts the API server daemon and logs
 1. `stop` - Kills server process
 1. `test` -  Run server tests
@@ -41,6 +42,7 @@ Available npm scripts:
 1. `seed:all` - Insert seed data on both dev and test databases
 
 In addition, the following lifecycle scripts have been added for convenience:
+
 1. `postinstall` - Runs `migrate:all` to execute all new migrations after an update
 
 
